@@ -1,4 +1,5 @@
 import re 
+from core import *
 
 """
 <HHE> ::= apply <func> <args> to <id>
@@ -25,7 +26,20 @@ def is_open_expr(expr_str):
     if (len(match_filename) != 1 or len(match_id) != 1):
         return hiphop_error("ParserError", -1, 'Invalid syntax for `open` expression.')
     else:
-        return open_expr(match_filename, match_id)
+        return open_expr(match_filename[0], match_id[0])
+
+def is_save_expr(expr_str):
+
+    match_id = re.findall('(?<=save )(.*)(?= as)', expr_str)
+    match_filename = re.findall('(?<=save ).*(?<= as ")(.*)"', expr_str)
+    print("filename: {}; id: {}".format(match_filename[0], match_id[0]))
+    if (len(match_filename) != 1 or len(match_id) != 1):
+        return hiphop_error("ParserError", -1, 'Invalid syntax for `save` expression.')
+    else:
+        return save_expr(match_id[0], match_filename[0])
+
+
+
 
 class open_expr():
 
@@ -34,6 +48,10 @@ class open_expr():
         self.filename = filename 
         self.id = id 
 
+    def evaluate(self):
+
+        openfile(self.filename, self.id)
+
 
 class save_expr():
 
@@ -41,6 +59,10 @@ class save_expr():
 
         self.id = id 
         self.filename = filename
+
+    def evaluate(self):
+
+        savefile(self.id, self.filename)
 
 class apply_expr():
 
@@ -55,6 +77,15 @@ class apply_expr():
         self.funcname = funcname 
         self.args = args 
         self.img = img 
+
+    def evaluate(self):
+
+        if (self.funcname == "blur"):
+            blur(self.args[0], self.args[1])
+        elif (self.funcname == "blackandwhite"):
+            blackandwhite(self.args[0])
+        else:
+            return hiphop_error("InvalidFunctionError", -1, "Function name does not exist.")
 
 class identifier():
 

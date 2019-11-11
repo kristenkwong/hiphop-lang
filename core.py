@@ -4,6 +4,12 @@
 
 def openfile(filename, id):
 
+    print("TODO: OPEN FILE FUNCTION. Parameters: {}, {}".format(filename, id))
+    return
+
+def savefile(id, filename):
+
+    print("TODO: SAVE FILE FUNCTION. Parameters: {}, {}".format(id, filename))
     return
 
 
@@ -11,8 +17,10 @@ def openfile(filename, id):
 
 def blur(id, value):
 
+    print("TODO: BLUR FUNCTION. Parameters: {}, {}".format(id, value))
     return 
 
 def blackandwhite(id):
 
+    print("TODO: BLACK AND WHITE FUNCTION. Parameters: {}".format(id))
     return

@@ -1,3 +1,3 @@
 open "test-image.jpg" as img
-blur img 50
+apply blur 50 to img
 save img as "test-output.jpg"

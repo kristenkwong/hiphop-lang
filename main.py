@@ -2,6 +2,23 @@ from hiphopparse import Parser
 from hiphopinterp import Interpreter
 import sys 
 
+class var_dict():
+    """
+    Keeps track of ids holding images within the program.
+    """
+
+    def __init__(self):
+
+        self.map = {}
+
+    def add_var(self, id, img):
+
+        self.map[id] = img 
+
+    def get_var(self, id):
+
+        return self.map[id]
+
 def main():
 
     interp = Interpreter()
