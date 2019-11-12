@@ -20,28 +20,33 @@ class Parser():
             if tokens[0] == "open":
                 open_expr = is_open_expr(line)
                 if (isinstance(open_expr, hiphop_error)):
-                    open_expr.line_num = line_num
-                    open_expr.printError()
-                    sys.exit()
+                    error_out(open_expr, line_num)
                 else:
-                    open_expr.evaluate()
+                    val = open_expr.evaluate()
+                    if (isinstance(val, hiphop_error)):
+                        error_out(val, line_num)
             elif tokens[0] == "apply":
                 apply_expr = is_apply_expr(line)
                 if (isinstance(apply_expr, hiphop_error)):
-                    apply_expr.line_num = line_num
-                    apply_expr.printError()
-                    sys.exit()
+                    error_out(apply_expr, line_num)
                 else:
-                    apply_expr.evaluate()
+                    val = apply_expr.evaluate()
+                    if (isinstance(val, hiphop_error)):
+                        error_out(val, line_num)
             elif tokens[0] == "save":
                 save_expr = is_save_expr(line)
                 if (isinstance(save_expr, hiphop_error)):
-                    save_expr.line_num = line_num
-                    save_expr.printError()
-                    sys.exit()
+                    error_out(save_expr, line_num)
                 else:
-                    save_expr.evaluate()
+                    val = save_expr.evaluate()
+                    if (isinstance(val, hiphop_error)):
+                        error_out(val, line_num)
             else:
                 pass
 
             line_num += 1
+
+def error_out(hiphop_error, line_num):
+    hiphop_error.line_num = line_num
+    hiphop_error.printError()
+    sys.exit()

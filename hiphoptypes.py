@@ -91,8 +91,12 @@ class apply_expr():
     def evaluate(self):
 
         if (self.funcname == "blur"):
+            if (len(self.args) != 1):
+                return hiphop_error("InvalidFunctionError", -1, "Invalid number of arguments for `blur`")
             blur(self.img, int(self.args[0]))
         elif (self.funcname == "grayscale"):
+            if (len(self.args) != 0):
+                return hiphop_error("InvalidFunctionError", -1, "Invalid number of arguments for `grayscale`")
             blackandwhite(self.img)
         else:
             return hiphop_error("InvalidFunctionError", -1, "Function name does not exist.")
