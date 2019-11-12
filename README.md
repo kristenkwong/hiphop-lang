@@ -1,17 +1,19 @@
 ## EBNF
 
 ```
-<HHE> ::= apply <func> <args> to <id>
-        | open "<filename>" as <id>
-        | save <id> as "filename>"
-        | <id>
-        | <num>
+<HHE> ::= <img>
+        | open <filename> as <id>
+        | save <id> as <filename>
 
-<args> ::= <arg>
-         | <arg> <args>
-         | 
+<img> ::= <id>
+		| apply <func> to <img>
 
-<arg> ::= NUMBER
+<filename> ::= "<literal>"
 
-<id> ::= STRING 
+<func> ::= <id> <nums>
+
+<literal> ::= STRING
+
+<nums> ::= 
+         | <num> <nums>
 ```
