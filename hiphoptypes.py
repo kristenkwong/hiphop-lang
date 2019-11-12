@@ -38,8 +38,18 @@ def is_save_expr(expr_str):
     else:
         return save_expr(match_id[0], match_filename[0])
 
+def is_apply_expr(expr_str):
 
+    #TODO: Regex expressions to get these.
 
+    match = re.findall('(?<=apply )(.*)( to )(.*)', expr_str)
+    if (len(match) != 1):
+        return hiphop_error("ParserError", -1, 'Invalid syntax for `apply` expression.')
+    match_func, _, match_id = match[0]
+    match_function= match_func.split()
+    match_funcname, match_args = match_function[0], match_function[1:]
+    print("funcname: {}; args: {}; id: {}".format(match_funcname, match_args, match_id))
+    return apply_expr(match_funcname, match_args, match_id)
 
 class open_expr():
 
@@ -81,7 +91,7 @@ class apply_expr():
     def evaluate(self):
 
         if (self.funcname == "blur"):
-            blur(self.args[0], self.args[1])
+            blur(self.img, int(self.args[0]))
         elif (self.funcname == "blackandwhite"):
             blackandwhite(self.args[0])
         else:

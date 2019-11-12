@@ -19,10 +19,11 @@ class var_dict():
 
         return self.map[id]
 
+saved_vars = var_dict()
+
 def main():
 
-    interp = Interpreter()
-    parser = Parser(interp)
+    parser = Parser()
     
     # count number of arguments
     if (len(sys.argv) == 2):

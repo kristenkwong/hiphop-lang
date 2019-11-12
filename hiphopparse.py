@@ -1,13 +1,12 @@
 # To parse a HIPHOP program
 from hiphoptypes import *
-from hiphopinterp import Interpreter
 import sys
 
 class Parser():
 
-    def __init__(self, interpreter):
+    def __init__(self):
 
-        self.interpreter = interpreter 
+        return
 
     def parse(self, filename):
 
@@ -27,7 +26,13 @@ class Parser():
                 else:
                     open_expr.evaluate()
             elif tokens[0] == "apply":
-                pass
+                apply_expr = is_apply_expr(line)
+                if (isinstance(apply_expr, hiphop_error)):
+                    apply_expr.line_num = line_num
+                    apply_expr.printError()
+                    sys.exit()
+                else:
+                    apply_expr.evaluate()
             elif tokens[0] == "save":
                 save_expr = is_save_expr(line)
                 if (isinstance(save_expr, hiphop_error)):
