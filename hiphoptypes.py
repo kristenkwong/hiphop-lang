@@ -92,8 +92,8 @@ class apply_expr():
 
         if (self.funcname == "blur"):
             blur(self.img, int(self.args[0]))
-        elif (self.funcname == "blackandwhite"):
-            blackandwhite(self.args[0])
+        elif (self.funcname == "grayscale"):
+            blackandwhite(self.img)
         else:
             return hiphop_error("InvalidFunctionError", -1, "Function name does not exist.")
 

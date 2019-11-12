@@ -1,19 +1,27 @@
 # Core functions for our image processing DSL
 
+from runenv import saved_vars
+import numpy as np 
+import cv2
+
 ###### FILE OPERATIONS ######
 
 def openfile(filename, id):
 
-    #TODO: Fill in this function to open an image file and save it as its id.
+    print("Open file function called. Parameters: {}, {}".format(filename, id))
+    img = cv2.imread(filename)
+    saved_vars.add_var(id, img)
+    cv2.imshow('hi', saved_vars.get_var(id))
 
-    print("TODO: OPEN FILE FUNCTION. Parameters: {}, {}".format(filename, id))
     return
 
 def savefile(id, filename):
 
     #TODO: Fill in this function to save the image with the given id as the filename.
 
-    print("TODO: SAVE FILE FUNCTION. Parameters: {}, {}".format(id, filename))
+    print("Save file function. Parameters: {}, {}".format(id, filename))
+    cv2.imwrite(filename, saved_vars.get_var(id))
+
     return
 
 
@@ -28,7 +36,9 @@ def blur(id, value):
 
 def blackandwhite(id):
 
-    #TODO: Apply a black and white filter to the image saved with id.
+    print("Grayscale function called. Parameters: {}".format(id))
 
-    print("TODO: BLACK AND WHITE FUNCTION. Parameters: {}".format(id))
+    img = saved_vars.get_var(id)
+    gray_image = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    saved_vars.add_var(id, gray_image)
     return
