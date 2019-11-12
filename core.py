@@ -1,4 +1,4 @@
-# Core functions for our image processing DSL
+# Core functions for image processing
 
 from runenv import saved_vars
 import numpy as np 

@@ -1,3 +1,5 @@
 open "test-image.jpg" as img
 apply grayscale to img
 save img as "test-output.jpg"
+open "test-output.jpg" as img2
+save img2 as "test-output2.jpg"

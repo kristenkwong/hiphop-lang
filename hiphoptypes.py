@@ -40,8 +40,6 @@ def is_save_expr(expr_str):
 
 def is_apply_expr(expr_str):
 
-    #TODO: Regex expressions to get these.
-
     match = re.findall('(?<=apply )(.*)( to )(.*)', expr_str)
     if (len(match) != 1):
         return hiphop_error("ParserError", -1, 'Invalid syntax for `apply` expression.')
@@ -59,7 +57,6 @@ class open_expr():
         self.id = id 
 
     def evaluate(self):
-
         openfile(self.filename, self.id)
 
 
@@ -71,7 +68,6 @@ class save_expr():
         self.filename = filename
 
     def evaluate(self):
-
         savefile(self.id, self.filename)
 
 class apply_expr():
