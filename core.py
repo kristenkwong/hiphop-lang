@@ -1,7 +1,6 @@
 # Core functions for image processing
 
 from runenv import saved_vars
-import numpy as np 
 import cv2
 
 ###### FILE OPERATIONS ######

@@ -1,5 +1,4 @@
 from hiphopparse import Parser
-from hiphopinterp import Interpreter
 import sys 
 
 def main():
