@@ -42,17 +42,17 @@ class Parser():
             else:
                 val = apply_all_expr.evaluate()
                 if (isinstance(val, hiphop_error)):
-                    return val 
+                    return val
         elif tokens[0] == "save-macro":
             save_macro = is_save_macro_expr(expr)
             if (isinstance(save_macro, hiphop_error)):
                 return save_macro
-            else: 
+            else:
                 val = save_macro.evaluate()
                 if (isinstance(val, hiphop_error)):
                     return val
         else:
-            return hiphop_error("ParseError", -1, "Unable to parse line")
+            raise hiphop_error("ParseError", -1, "Unable to parse line")
 
     def parse(self, filename):
 
@@ -63,11 +63,6 @@ class Parser():
             print("Parsing line {}: {}".format(line_num, line.strip()))
             parse_res = self.parse_line(line)
             if (isinstance(parse_res, hiphop_error)):
-                error_out(parse_res, line_num)
+                parse_res.line_num = line_num
+                raise parse_res
             line_num += 1
-
-
-def error_out(hiphop_error, line_num):
-    hiphop_error.line_num = line_num
-    hiphop_error.printError()
-    sys.exit()
