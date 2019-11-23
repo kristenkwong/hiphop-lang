@@ -1,6 +1,6 @@
 import re
 from core import *
-from hiphoperrors import hiphop_error
+from hiphoperrors import hiphop_error, hiphop_eval_error
 
 """
 <HHE> ::= <id>
@@ -19,7 +19,7 @@ from hiphoperrors import hiphop_error
 
 <literal> ::= STRING
 
-<nums> ::= 
+<nums> ::=
          | <num> <nums>
 """
 
@@ -30,7 +30,7 @@ def is_open_expr(expr_str):
     match_filename = re.findall('(?<=open ")(.*)(?=" as)', expr_str)
     match_id = re.findall('(?<=open ")*(?<=" as )(.*)$', expr_str)
     if (len(match_filename) != 1 or len(match_id) != 1):
-        return hiphop_error("ParserError", -1, 'Invalid syntax for `open` expression.')
+        raise hiphop_error("ParserError", -1, 'Invalid syntax for `open` expression.')
     else:
         return open_expr(match_filename[0], match_id[0])
 
@@ -38,9 +38,9 @@ def is_save_expr(expr_str):
 
     match_id = re.findall('(?<=save )(.*)(?= as)', expr_str)
     match_filename = re.findall('(?<=save ).*(?<= as ")(.*)"', expr_str)
-    print("filename: {}; id: {}".format(match_filename[0], match_id[0]))
+    # print("filename: {}; id: {}".format(match_filename[0], match_id[0]))
     if (len(match_filename) != 1 or len(match_id) != 1):
-        return hiphop_error("ParserError", -1, 'Invalid syntax for `save` expression.')
+        raise hiphop_error("ParserError", -1, 'Invalid syntax for `save` expression.')
     else:
         return save_expr(match_id[0], match_filename[0])
 
@@ -48,25 +48,25 @@ def is_apply_expr(expr_str):
 
     match = re.findall('(?<=apply )(.*)( to )(.*)', expr_str)
     if (len(match) != 1):
-        return hiphop_error("ParserError", -1, 'Invalid syntax for `apply` expression.')
+        raise hiphop_error("ParserError", -1, 'Invalid syntax for `apply` expression.')
     match_func, _, match_id = match[0]
     match_function= match_func.split()
     match_funcname, match_args = match_function[0], match_function[1:]
-    print("funcname: {}; args: {}; id: {}".format(match_funcname, match_args, match_id))
+    # print("funcname: {}; args: {}; id: {}".format(match_funcname, match_args, match_id))
     return apply_expr(match_funcname, match_args, match_id)
 
 def is_apply_all_expr(expr_str):
 
     match = re.findall('(?<=apply-all \[)(.*)] to (.*)', expr_str)
     if (len(match) != 1):
-        return hiphop_error("ParserError", -1, 'Invalid syntax for `apply-all` expression.')
+        raise hiphop_error("ParserError", -1, 'Invalid syntax for `apply-all` expression.')
     match_funcs, match_id = match[0]
     lambda_funcs = []
     new_funcs = match_funcs.split(",")
     for new_func in new_funcs:
         new_lambda = make_lambda_func(new_func.strip())
         if (isinstance(new_lambda, hiphop_error)):
-            return hiphop_error("ParserError", -1, 'Unable to make lambda function for {}'.format(new_func))
+            raise hiphop_error("ParserError", -1, 'Unable to make lambda function for {}'.format(new_func))
         lambda_funcs.append(new_lambda)
     return apply_all_expr(lambda_funcs, match_id)
 
@@ -74,7 +74,7 @@ def is_save_macro_expr(expr_str):
 
     match = re.findall('(?<=save-macro \[)(.*)] to (.*)', expr_str)
     if (len(match) != 1):
-        return hiphop_error("ParserError", -1, 'Invalid syntax for `save-macro` expression.')
+        raise hiphop_error("ParserError", -1, 'Invalid syntax for `save-macro` expression.')
     match_funcs, match_id = match[0]
     return save_macro_expr(match_funcs, match_id)
 
@@ -117,43 +117,43 @@ class apply_expr():
 
         if (self.funcname == "blur"):
             if (len(self.args) != 1):
-                return hiphop_error("InvalidFunctionError", -1, "Invalid number of arguments for `blur`")
+                raise hiphop_eval_error("InvalidFunctionError", "Invalid number of arguments for `blur`. Usage: blur {radius}")
             blur(self.img, int(self.args[0]))
         elif (self.funcname == "grayscale"):
             if (len(self.args) != 0):
-                return hiphop_error("InvalidFunctionError", -1, "Invalid number of arguments for `grayscale`")
+                raise hiphop_eval_error("InvalidFunctionError", "Invalid number of arguments for `grayscale`")
             grayscale(self.img)
         elif (self.funcname == "erode"):
             if (len(self.args) != 1):
-                return hiphop_error("InvalidFunctionError", -1, "Invalid number of argments for `erode`")
+                raise hiphop_eval_error("InvalidFunctionError", "Invalid number of argments for `erode`. Usage: erode {radius}")
             erode(self.img, int(self.args[0]))
         elif (self.funcname == "dilate"):
             if (len(self.args) != 1):
-                return hiphop_error("InvalidFunctionError", -1, "Invalid number of argments for `erode`")
+                raise hiphop_eval_error("InvalidFunctionError", "Invalid number of argments for `erode`. Usage: outline {radius}")
             dilate(self.img, int(self.args[0]))
         elif (self.funcname == "outline"):
             if (len(self.args) != 1):
-                return hiphop_error("InvalidFunctionError", -1, "Invalid number of argments for `outline`")
+                raise hiphop_eval_error("InvalidFunctionError", "Invalid number of argments for `outline. Usage: outline {radius}`")
             outline(self.img, int(self.args[0]))
         elif (self.funcname == "filtercolor"):
             if (len(self.args) != 6):
-                return hiphop_error("InvalidFunctionError", -1, "Invalid number of arguments for `filtercolor lowR lowG lowB highR highG highB`")
+                raise hiphop_eval_error("InvalidFunctionError", "Invalid number of arguments for `filtercolor {lowR} {lowG} {lowB} {highR} {highG} {highB}`")
             filtercolor(self.img, int(self.args[0]), int(self.args[1]), int(self.args[2]),
                                   int(self.args[3]), int(self.args[4]), int(self.args[5]))
         elif (self.funcname == "scale"):
             if (len(self.args) != 2):
-                return hiphop_error("InvalidFunctionError", -1, "Invalid number of argments for `scale`")
+                raise hiphop_eval_error("InvalidFunctionError", "Invalid number of argments for `scale`")
             scale(self.img, float(self.args[0]), float(self.args[1]))
         elif (self.funcname == "crop"):
             if (len(self.args) != 4):
-                return hiphop_error("InvalidFunctionError", -1, "Invalid number of arguments for `crop widthlow widthhigh heightlow heighthigh`")
+                raise hiphop_eval_error("InvalidFunctionError", "Invalid number of arguments for `crop {widthlow} {widthhigh} {heightlow} {heighthigh}`")
             crop(self.img, float(self.args[0]), float(self.args[1]), float(self.args[2]), float(self.args[3]))
         elif (saved_macros.get_var(self.funcname) != -1):
             if len(self.args) != 0:
-                return hiphop_error("InvalidFunctionError", -1, "Invalid number of arguments for `{}`".format(self.funcname))
+                raise hiphop_eval_error("InvalidFunctionError", "Invalid number of arguments for `{}`".format(self.funcname))
             apply_all_expr(saved_macros.get_var(self.funcname), self.img).evaluate()
         else:
-            return hiphop_error("InvalidFunctionError", -1, "Function name does not exist.")
+            raise hiphop_eval_error("InvalidFunctionError", "Function name does not exist.")
 
 class apply_all_expr():
 
@@ -165,7 +165,7 @@ class apply_all_expr():
         """
 
         self.apply_funcs = apply_funcs
-        self.img = img 
+        self.img = img
 
     def evaluate(self):
 
@@ -177,7 +177,7 @@ class apply_all_expr():
 class save_macro_expr():
 
     def __init__(self, funcs, id):
-        
+
         self.funcs = []
 
         # Parse the string of functions into lambda functions
@@ -204,39 +204,39 @@ def make_lambda_func(str):
 
     if (funcname == "blur"):
         if (len(func_args) != 1):
-            return hiphop_error("InvalidFunctionError", -1, "Invalid number of arguments for `blur`")
+            raise hiphop_eval_error("InvalidFunctionError", "Invalid number of arguments for `blur`")
         return lambda img: blur(img, int(func_args[0]))
     elif (funcname == "grayscale"):
         if (len(func_args) != 0):
-            return hiphop_error("InvalidFunctionError", -1, "Invalid number of arguments for `grayscale`")
+            raise hiphop_eval_error("InvalidFunctionError", "Invalid number of arguments for `grayscale`")
         return lambda img: grayscale(img)
     elif (funcname == "erode"):
         if (len(func_args) != 1):
-            return hiphop_error("InvalidFunctionError", -1, "Invalid number of argments for `erode`")
+            raise hiphop_eval_error("InvalidFunctionError", "Invalid number of argments for `erode`")
         return lambda img: erode(img, int(func_args[0]))
     elif (funcname == "dilate"):
         if (len(func_args) != 1):
-            return hiphop_error("InvalidFunctionError", -1, "Invalid number of argments for `erode`")
+            raise hiphop_eval_error("InvalidFunctionError", "Invalid number of argments for `erode`")
         return lambda img: dilate(img, int(func_args[0]))
     elif (funcname == "outline"):
         if (len(func_args) != 1):
-            return hiphop_error("InvalidFunctionError", -1, "Invalid number of argments for `outline`")
+            raise hiphop_error("InvalidFunctionError", -1, "Invalid number of argments for `outline`")
         return lambda img: outline(img, int(func_args[0]))
     elif (funcname == "filtercolor"):
         if (len(func_args) != 6):
-            return hiphop_error("InvalidFunctionError", -1, "Invalid number of arguments for `filtercolor lowR lowG lowB highR highG highB`")
+            raise hiphop_eval_error("InvalidFunctionError", "Invalid number of arguments for `filtercolor lowR lowG lowB highR highG highB`")
         return lambda img: filtercolor(img, int(func_args[0]), int(func_args[1]), int(func_args[2]),
                                 int(func_args[3]), int(func_args[4]), int(func_args[5]))
     elif (funcname == "scale"):
         if (len(func_args) != 2):
-            return hiphop_error("InvalidFunctionError", -1, "Invalid number of argments for `scale`")
+            raise hiphop_eval_error("InvalidFunctionError", "Invalid number of argments for `scale`")
         return lambda img: scale(img, float(func_args[0]), float(func_args[1]))
     elif (funcname == "crop"):
         if (len(func_args) != 4):
-            return hiphop_error("InvalidFunctionError", -1, "Invalid number of arguments for `crop widthlow widthhigh heightlow heighthigh`")
+            raise hiphop_eval_error("InvalidFunctionError", "Invalid number of arguments for `crop widthlow widthhigh heightlow heighthigh`")
         return lambda img: crop(img, float(func_args[0]), float(func_args[1]), float(func_args[2]), float(func_args[3]))
     else:
-        return hiphop_error("InvalidFunctionError", -1, "Function name does not exist.")
+        raise hiphop_eval_error("InvalidFunctionError",  "Function name does not exist.")
 
 
 class apply_funcs():

@@ -10,14 +10,14 @@ import numpy as np
 
 def openfile(filename, id):
 
-    print("Open file function called. Parameters: {}, {}".format(filename, id))
+    # print("Open file function called. Parameters: {}, {}".format(filename, id))
     img = cv2.imread(filename)
     saved_vars.add_var(id, img)
     cv2.imshow('hi', saved_vars.get_var(id))
 
 def savefile(id, filename):
 
-    print("Save file function. Parameters: {}, {}".format(id, filename))
+    # print("Save file function. Parameters: {}, {}".format(id, filename))
     cv2.imwrite(filename, saved_vars.get_var(id))
 
 
@@ -28,7 +28,6 @@ def scale(id, x, y):
     height = int(img.shape[0] * y)
     dim = (width,height)
     scaled = cv2.resize(img, dim)
-    cv2.imshow("scaling", scaled)
     saved_vars.add_var(id, scaled)
     return
 
@@ -40,7 +39,7 @@ def blur(id, value):
 
 def grayscale(id):
 
-    print("Grayscale function called. Parameters: {}".format(id))
+    # print("Grayscale function called. Parameters: {}".format(id))
 
     img = saved_vars.get_var(id)
     gray_image = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -48,7 +47,7 @@ def grayscale(id):
     return
 
 def erode(id, value):
-    print("Eroding function called. Parameters: {}, {}".format(id, value))
+    # print("Eroding function called. Parameters: {}, {}".format(id, value))
     kernel = np.ones((value,value),np.uint8)
     img = saved_vars.get_var(id)
     eroded = cv2.erode(img,kernel,iterations = 1)
@@ -56,7 +55,7 @@ def erode(id, value):
     return
 
 def dilate(id, value):
-    print("Dilating function called. Parameters: {}, {}".format(id, value))
+    # print("Dilating function called. Parameters: {}, {}".format(id, value))
     kernel = np.ones((value,value),np.uint8)
     img = saved_vars.get_var(id)
     eroded = cv2.dilate(img,kernel,iterations = 1)
@@ -64,7 +63,7 @@ def dilate(id, value):
     return
 
 def outline(id, value):
-    print("Outline function called. Paramters: {}, {}".format(id, value))
+    # print("Outline function called. Paramters: {}, {}".format(id, value))
     kernel = np.ones((value,value), np.uint8)
     img = saved_vars.get_var(id)
     morph_gradient = cv2.morphologyEx(img, cv2.MORPH_GRADIENT, kernel)
@@ -93,7 +92,7 @@ def filtercolor(id, lowR, lowG, lowB, highR, highG, highB):
 # where the range of image is [-1, 1] fir width and height with 0 at center
 # for example a image with width 200 and height 100
 # widthlow = -0.5 widthhigh = 0.5 heightlow = -0.5 heighthigh = 0.5
-# would return a new image with pixels ranged [50, 150] for width and [25, 75] for height 
+# would return a new image with pixels ranged [50, 150] for width and [25, 75] for height
 def crop(id, widthlow, widthhigh, heightlow, heighthigh):
 
     img = saved_vars.get_var(id)
