@@ -119,7 +119,7 @@ class apply_expr():
         elif (self.funcname == "grayscale"):
             if (len(self.args) != 0):
                 return hiphop_error("InvalidFunctionError", -1, "Invalid number of arguments for `grayscale`")
-            blackandwhite(self.img)
+            grayscale(self.img)
         elif (self.funcname == "erode"):
             if (len(self.args) != 1):
                 return hiphop_error("InvalidFunctionError", -1, "Invalid number of argments for `erode`")
@@ -203,7 +203,7 @@ def make_lambda_func(str):
     elif (funcname == "grayscale"):
         if (len(func_args) != 0):
             return hiphop_error("InvalidFunctionError", -1, "Invalid number of arguments for `grayscale`")
-        return lambda img: blackandwhite(img)
+        return lambda img: grayscale(img)
     else:
         return hiphop_error("InvalidFunctionError", -1, "Function name does not exist.")
 

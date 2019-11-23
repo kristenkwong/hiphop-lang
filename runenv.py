@@ -2,13 +2,14 @@
 # such as all identifiers
 from hiphoperrors import hiphop_error
 
+reserved_func_names = ["blur", "grayscale", "erode", "dilate", "outline", "filtercolor", "scale", "crop"]
+
 class var_dict():
     """
     Keeps track of ids holding images within the program.
     """
 
     def __init__(self):
-
         self.map = {}
 
     def add_var(self, id, img):
@@ -40,9 +41,7 @@ saved_macros = macros_dict()
 
 def is_id_used(new_id):
 
-    if (isinstance(saved_vars.get_var(new_id), int)):
+    if (new_id in reserved_func_names):
         return False
-    elif (isinstance(saved_macros.get_var(new_id), int)):
-        return False 
 
     return True
