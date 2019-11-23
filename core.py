@@ -3,6 +3,7 @@
 from runenv import saved_vars
 import cv2
 import numpy as np
+import os
 
 ###### FILE OPERATIONS ######
 
@@ -20,6 +21,26 @@ def savefile(id, filename):
     #TODO: Fill in this function to save the image with the given id as the filename.
 
     print("Save file function. Parameters: {}, {}".format(id, filename))
+
+    if (filename.startswith('../')):
+        # should throw error here
+        return
+
+    # id filename just start with /
+    if (filename.startswith('/')):
+        filename = "." + filename
+
+    # if filename does not start with ./
+    if not (filename.startswith('./')):
+        filename = "./" + filename
+
+    head_tail = os.path.split(filename)
+
+    if (os.path.exists(head_tail[0])):
+        print("folder exists")
+    else:
+        print("folder does not exists")
+        os.makedirs(head_tail[0])
     cv2.imwrite(filename, saved_vars.get_var(id))
 
     return

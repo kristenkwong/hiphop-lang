@@ -3,4 +3,5 @@ apply filtercolor 50 50 110 255 255 130 to img
 save img as "test-filtercolor.jpg"
 open "test-color.jpg" as img2
 apply crop -0.5 0 -0.5 0 to img2
-save img2 as "test-crop.jpg"
+save img2 as "./test-crop.jpg"
+save img2 as "out/test1/path.jpg"
