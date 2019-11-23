@@ -1,20 +1,26 @@
 import re
 from core import *
+from hiphoperrors import hiphop_error
 
 """
-<HHE> ::= apply <func> <args> to <id>
-        | open "<filename>" as <id>
-        | save <id> as "filename>"
-        | <id>
-        | <num>
+<HHE> ::= <id>
+        | open <filename> as <id>
+        | save <id> as <filename>
+        | apply <func> to <id>
+        | apply-all [<funcs>] to <id>
+        | save-macro [<funcs>] as <id>
 
-<args> ::= <arg>
-         | <arg> <args>
-         |
+<filename> ::= "<literal>"
 
-<arg> ::= NUMBER
+<funcs> ::= <func>
+        | <func>, <funcs>
 
-<id> ::= STRING
+<func> ::= <id> <nums>
+
+<literal> ::= STRING
+
+<nums> ::= 
+         | <num> <nums>
 """
 
 def is_open_expr(expr_str):
@@ -55,7 +61,19 @@ def is_apply_all_expr(expr_str):
     if (len(match) != 1):
         return hiphop_error("ParserError", -1, 'Invalid syntax for `apply-all` expression.')
     match_funcs, match_id = match[0]
-    return apply_all_expr(match_funcs, match_id)
+    lambda_funcs = []
+    new_funcs = match_funcs.split(",")
+    for new_func in new_funcs:
+        lambda_funcs.append(make_lambda_func(new_func.strip()))
+    return apply_all_expr(lambda_funcs, match_id)
+
+def is_save_macro_expr(expr_str):
+
+    match = re.findall('(?<=save-macro \[)(.*)] to (.*)', expr_str)
+    if (len(match) != 1):
+        return hiphop_error("ParserError", -1, 'Invalid syntax for `save-macro` expression.')
+    match_funcs, match_id = match[0]
+    return save_macro_expr(match_funcs, match_id)
 
 class open_expr():
 
@@ -123,6 +141,10 @@ class apply_expr():
             if (len(self.args) != 2):
                 return hiphop_error("InvalidFunctionError", -1, "Invalid number of argments for `scale`")
             scale(self.img, float(self.args[0]), float(self.args[1]))
+        elif (saved_macros.get_var(self.funcname) != -1):
+            if len(self.args) != 0:
+                return hiphop_error("InvalidFunctionError", -1, "Invalid number of arguments for `{}`".format(self.funcname))
+            apply_all_expr(saved_macros.get_var(self.funcname), self.img).evaluate()
         else:
             return hiphop_error("InvalidFunctionError", -1, "Function name does not exist.")
 
@@ -131,18 +153,12 @@ class apply_all_expr():
     def __init__(self, apply_funcs, img):
 
         """
-        apply_funcs: string of function calls
+        apply_funcs: lambda functions
         img: img expression
         """
 
-        self.apply_funcs = []
-
-        # Parse the string of functions into lambda functions
-        new_funcs = apply_funcs.split(",")
-        for new_func in new_funcs:
-            self.apply_funcs.append(make_lambda_func(new_func.strip()))
-
-        self.img = img
+        self.apply_funcs = apply_funcs
+        self.img = img 
 
     def evaluate(self):
 
@@ -150,6 +166,23 @@ class apply_all_expr():
             res = func(self.img)
             if (isinstance(res, hiphop_error)):
                 return res
+
+class save_macro_expr():
+
+    def __init__(self, funcs, id):
+        
+        self.funcs = []
+
+        # Parse the string of functions into lambda functions
+        new_funcs = funcs.split(",")
+        for new_func in new_funcs:
+            self.funcs.append(make_lambda_func(new_func.strip()))
+
+        self.id = id
+
+    def evaluate(self):
+        saved_macros.add_var(self.id, self.funcs)
+
 
 def make_lambda_func(str):
     # From a string representation, creates a lambda function
@@ -192,14 +225,3 @@ class identifier():
     def get_value(self):
 
         return self.boundvar
-
-class hiphop_error():
-
-    def __init__(self, error_type, line_num, error_msg):
-
-        self.error_type = error_type
-        self.line_num = line_num
-        self.error_msg = error_msg
-
-    def printError(self):
-        print("{} (line {}): {}".format(self.error_type, self.line_num, self.error_msg))

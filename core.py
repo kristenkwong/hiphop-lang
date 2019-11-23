@@ -1,6 +1,9 @@
 # Core functions for image processing
 
-from runenv import saved_vars
+# Add to function names when implementing new functions:
+func_names = ["blur", "blackandwhite"]
+
+from runenv import saved_vars, saved_macros
 import cv2
 import numpy as np
 
@@ -13,16 +16,12 @@ def openfile(filename, id):
     saved_vars.add_var(id, img)
     cv2.imshow('hi', saved_vars.get_var(id))
 
-    return
-
 def savefile(id, filename):
 
     #TODO: Fill in this function to save the image with the given id as the filename.
 
     print("Save file function. Parameters: {}, {}".format(id, filename))
     cv2.imwrite(filename, saved_vars.get_var(id))
-
-    return
 
 
 ###### IMAGE OPERATIONS ######
@@ -38,12 +37,9 @@ def scale(id, x, y):
 
 def blur(id, value):
 
-    #TODO: Apply the blur function to the image saved with id.
     img = saved_vars.get_var(id)
     blurred = cv2.blur(img, (value, value))
     saved_vars.add_var(id, blurred)
-    # print("TODO: BLUR FUNCTION. Parameters: {}, {}".format(id, value))
-    return
 
 def blackandwhite(id):
 
