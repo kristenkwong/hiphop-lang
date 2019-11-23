@@ -1,6 +1,7 @@
 # Core functions for image processing
 
 from runenv import saved_vars
+import numpy as np
 import cv2
 
 ###### FILE OPERATIONS ######
@@ -42,4 +43,22 @@ def blackandwhite(id):
     img = saved_vars.get_var(id)
     gray_image = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     saved_vars.add_var(id, gray_image)
+    return
+
+def filtercolor(id, lowR, lowG, lowB, highR, highG, highB):
+
+    img = saved_vars.get_var(id)
+
+    hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+
+    # define range of color in HSV
+    lower_range = np.array([lowB, lowG, lowR])
+    upper_range = np.array([highB, highG, highR])
+
+    # Threshold the HSV image to get only specified colors
+    mask = cv2.inRange(hsv, lower_range, upper_range)
+
+    # Bitwise-AND mask and original image
+    res = cv2.bitwise_and(img ,img, mask=mask)
+    saved_vars.add_var(id, res)
     return
