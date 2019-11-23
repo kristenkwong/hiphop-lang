@@ -141,6 +141,10 @@ class apply_expr():
             if (len(self.args) != 2):
                 return hiphop_error("InvalidFunctionError", -1, "Invalid number of argments for `scale`")
             scale(self.img, float(self.args[0]), float(self.args[1]))
+        elif (self.funcname == "crop"):
+            if (len(self.args) != 4):
+                return hiphop_error("InvalidFunctionError", -1, "Invalid number of arguments for `crop widthlow widthhigh heightlow heighthigh`")
+            crop(self.img, float(self.args[0]), float(self.args[1]), float(self.args[2]), float(self.args[3]))
         elif (saved_macros.get_var(self.funcname) != -1):
             if len(self.args) != 0:
                 return hiphop_error("InvalidFunctionError", -1, "Invalid number of arguments for `{}`".format(self.funcname))
