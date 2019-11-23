@@ -34,6 +34,14 @@ class Parser():
                 val = save_expr.evaluate()
                 if (isinstance(val, hiphop_error)):
                     return val
+        elif tokens[0] == "apply-all":
+            apply_all_expr = is_apply_all_expr(expr)
+            if (isinstance(apply_all_expr, hiphop_error)):
+                return apply_all_expr
+            else:
+                val = apply_all_expr.evaluate()
+                if (isinstance(val, hiphop_error)):
+                    return val 
         else:
             return hiphop_error("ParseError", -1, "Unable to parse line")
 
