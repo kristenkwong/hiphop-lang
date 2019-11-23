@@ -85,3 +85,4 @@ def filtercolor(id, lowR, lowG, lowB, highR, highG, highB):
     # Bitwise-AND mask and original image
     res = cv2.bitwise_and(img ,img, mask=mask)
     saved_vars.add_var(id, res)
+    return
