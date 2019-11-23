@@ -64,7 +64,10 @@ def is_apply_all_expr(expr_str):
     lambda_funcs = []
     new_funcs = match_funcs.split(",")
     for new_func in new_funcs:
-        lambda_funcs.append(make_lambda_func(new_func.strip()))
+        new_lambda = make_lambda_func(new_func.strip())
+        if (isinstance(new_lambda, hiphop_error)):
+            return hiphop_error("ParserError", -1, 'Unable to make lambda function for {}'.format(new_func))
+        lambda_funcs.append(new_lambda)
     return apply_all_expr(lambda_funcs, match_id)
 
 def is_save_macro_expr(expr_str):
@@ -180,7 +183,10 @@ class save_macro_expr():
         # Parse the string of functions into lambda functions
         new_funcs = funcs.split(",")
         for new_func in new_funcs:
-            self.funcs.append(make_lambda_func(new_func.strip()))
+            lambda_func = make_lambda_func(new_func.strip())
+            if (isinstance(lambda_func, hiphop_error)):
+                return lambda_func
+            self.funcs.append(lambda_func)
 
         self.id = id
 
@@ -204,6 +210,31 @@ def make_lambda_func(str):
         if (len(func_args) != 0):
             return hiphop_error("InvalidFunctionError", -1, "Invalid number of arguments for `grayscale`")
         return lambda img: grayscale(img)
+    elif (funcname == "erode"):
+        if (len(func_args) != 1):
+            return hiphop_error("InvalidFunctionError", -1, "Invalid number of argments for `erode`")
+        return lambda img: erode(img, int(func_args[0]))
+    elif (funcname == "dilate"):
+        if (len(func_args) != 1):
+            return hiphop_error("InvalidFunctionError", -1, "Invalid number of argments for `erode`")
+        return lambda img: dilate(img, int(func_args[0]))
+    elif (funcname == "outline"):
+        if (len(func_args) != 1):
+            return hiphop_error("InvalidFunctionError", -1, "Invalid number of argments for `outline`")
+        return lambda img: outline(img, int(func_args[0]))
+    elif (funcname == "filtercolor"):
+        if (len(func_args) != 6):
+            return hiphop_error("InvalidFunctionError", -1, "Invalid number of arguments for `filtercolor lowR lowG lowB highR highG highB`")
+        return lambda img: filtercolor(img, int(func_args[0]), int(func_args[1]), int(func_args[2]),
+                                int(func_args[3]), int(func_args[4]), int(func_args[5]))
+    elif (funcname == "scale"):
+        if (len(func_args) != 2):
+            return hiphop_error("InvalidFunctionError", -1, "Invalid number of argments for `scale`")
+        return lambda img: scale(img, float(func_args[0]), float(func_args[1]))
+    elif (funcname == "crop"):
+        if (len(func_args) != 4):
+            return hiphop_error("InvalidFunctionError", -1, "Invalid number of arguments for `crop widthlow widthhigh heightlow heighthigh`")
+        return lambda img: crop(img, float(func_args[0]), float(func_args[1]), float(func_args[2]), float(func_args[3]))
     else:
         return hiphop_error("InvalidFunctionError", -1, "Function name does not exist.")
 
