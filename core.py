@@ -5,6 +5,8 @@
 from runenv import saved_vars, saved_macros
 import cv2
 import numpy as np
+import os
+from hiphoperrors import hiphop_error
 
 ###### FILE OPERATIONS ######
 
@@ -18,6 +20,24 @@ def openfile(filename, id):
 def savefile(id, filename):
 
     # print("Save file function. Parameters: {}, {}".format(id, filename))
+
+    if (filename.startswith('../')):
+        # should throw error here
+        raise hiphop_error("SaveError", -1, "Filename should not start with ../")
+
+    # id filename just start with /
+    if (filename.startswith('/')):
+        filename = "." + filename
+
+    # if filename does not start with ./
+    if not (filename.startswith('./')):
+        filename = "./" + filename
+
+    head_tail = os.path.split(filename)
+
+    if not (os.path.exists(head_tail[0])):
+        os.makedirs(head_tail[0])
+
     cv2.imwrite(filename, saved_vars.get_var(id))
 
 
