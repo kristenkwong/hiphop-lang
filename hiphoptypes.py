@@ -186,6 +186,7 @@ class save_macro_expr():
             lambda_func = make_lambda_func(new_func.strip())
             if (isinstance(lambda_func, hiphop_error)):
                 return lambda_func
+                # TODO: throw error
             self.funcs.append(lambda_func)
 
         self.id = id

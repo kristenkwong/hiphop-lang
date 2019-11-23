@@ -13,7 +13,7 @@ def openfile(filename, id):
     print("Open file function called. Parameters: {}, {}".format(filename, id))
     img = cv2.imread(filename)
     saved_vars.add_var(id, img)
-    cv2.imshow('hi', saved_vars.get_var(id))
+    # cv2.imshow('hi', saved_vars.get_var(id))
 
 def savefile(id, filename):
 
@@ -28,7 +28,7 @@ def scale(id, x, y):
     height = int(img.shape[0] * y)
     dim = (width,height)
     scaled = cv2.resize(img, dim)
-    cv2.imshow("scaling", scaled)
+    # cv2.imshow("scaling", scaled)
     saved_vars.add_var(id, scaled)
     return
 
