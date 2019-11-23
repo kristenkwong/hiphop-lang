@@ -26,6 +26,15 @@ def savefile(id, filename):
 
 
 ###### IMAGE OPERATIONS ######
+def scale(id, x, y):
+    img = saved_vars.get_var(id)
+    width = int(img.shape[1] * x)
+    height = int(img.shape[0] * y)
+    dim = (width,height)
+    scaled = cv2.resize(img, dim)
+    cv2.imshow("scaling", scaled)
+    saved_vars.add_var(id, scaled)
+    return
 
 def blur(id, value):
 
