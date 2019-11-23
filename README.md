@@ -1,14 +1,17 @@
 ## EBNF
 
 ```
-<HHE> ::= <img>
+<HHE> ::= <id>
         | open <filename> as <id>
         | save <id> as <filename>
-
-<img> ::= <id>
-		| apply <func> to <img>
+        | apply <func> to <id>
+        | apply-all [<funcs>] to <id>
+        | save-macro [<funcs>] as <id>
 
 <filename> ::= "<literal>"
+
+<funcs> ::= <func>
+        | <func>, <funcs>
 
 <func> ::= <id> <nums>
 
