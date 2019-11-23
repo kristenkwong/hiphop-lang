@@ -1,4 +1,4 @@
-import re 
+import re
 from core import *
 
 """
@@ -10,16 +10,16 @@ from core import *
 
 <args> ::= <arg>
          | <arg> <args>
-         | 
+         |
 
 <arg> ::= NUMBER
 
-<id> ::= STRING 
+<id> ::= STRING
 """
 
 def is_open_expr(expr_str):
     # For one line of the program, if valid program return object,
-    # otherwise False 
+    # otherwise False
 
     match_filename = re.findall('(?<=open ")(.*)(?=" as)', expr_str)
     match_id = re.findall('(?<=open ")*(?<=" as )(.*)$', expr_str)
@@ -61,8 +61,8 @@ class open_expr():
 
     def __init__(self, filename, id):
 
-        self.filename = filename 
-        self.id = id 
+        self.filename = filename
+        self.id = id
 
     def evaluate(self):
         openfile(self.filename, self.id)
@@ -72,7 +72,7 @@ class save_expr():
 
     def __init__(self, id, filename):
 
-        self.id = id 
+        self.id = id
         self.filename = filename
 
     def evaluate(self):
@@ -84,13 +84,13 @@ class apply_expr():
 
         """
         funcname: function to call when expression is evaluated
-        args: list of arguments going into the function 
+        args: list of arguments going into the function
         img: img expression
         """
 
-        self.funcname = funcname 
-        self.args = args 
-        self.img = img 
+        self.funcname = funcname
+        self.args = args
+        self.img = img
 
     def evaluate(self):
 
@@ -102,6 +102,18 @@ class apply_expr():
             if (len(self.args) != 0):
                 return hiphop_error("InvalidFunctionError", -1, "Invalid number of arguments for `grayscale`")
             blackandwhite(self.img)
+        elif (self.funcname == "erode"):
+            if (len(self.args) != 1):
+                return hiphop_error("InvalidFunctionError", -1, "Invalid number of argments for `erode`")
+            erode(self.img, int(self.args[0]))
+        elif (self.funcname == "dilate"):
+            if (len(self.args) != 1):
+                return hiphop_error("InvalidFunctionError", -1, "Invalid number of argments for `erode`")
+            dilate(self.img, int(self.args[0]))
+        elif (self.funcname == "outline"):
+            if (len(self.args) != 1):
+                return hiphop_error("InvalidFunctionError", -1, "Invalid number of argments for `outline`")
+            outline(self.img, int(self.args[0]))
         else:
             return hiphop_error("InvalidFunctionError", -1, "Function name does not exist.")
 
@@ -166,7 +178,7 @@ class identifier():
 
     def __init__(self, boundvar):
 
-        self.boundvar = boundvar 
+        self.boundvar = boundvar
 
     def get_value(self):
 
@@ -182,4 +194,3 @@ class hiphop_error():
 
     def printError(self):
         print("{} (line {}): {}".format(self.error_type, self.line_num, self.error_msg))
-

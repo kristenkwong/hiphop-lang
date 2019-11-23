@@ -1,0 +1,11 @@
+open "text.jpg" as target
+apply erode 5 to target
+apply dilate 3 to target
+save target as "text-output.jpg"
+open "man.jpg" as man
+apply erode 3 to man
+apply dilate 3 to man
+save man as "man-output.jpg"
+open "man.jpg" as man2
+apply outline 5 to man2
+save man2 as "man-outline.jpg"
