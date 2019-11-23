@@ -117,8 +117,12 @@ class apply_expr():
         elif (self.funcname == "filtercolor"):
             if (len(self.args) != 6):
                 return hiphop_error("InvalidFunctionError", -1, "Invalid number of arguments for `filtercolor lowR lowG lowB highR highG highB`")
-            filtercolor(self.img, int(self.args[0]), int(self.args[1]), int(self.args[2]), 
+            filtercolor(self.img, int(self.args[0]), int(self.args[1]), int(self.args[2]),
                                   int(self.args[3]), int(self.args[4]), int(self.args[5]))
+        elif (self.funcname == "scale"):
+            if (len(self.args) != 2):
+                return hiphop_error("InvalidFunctionError", -1, "Invalid number of argments for `scale`")
+            scale(self.img, float(self.args[0]), float(self.args[1]))
         else:
             return hiphop_error("InvalidFunctionError", -1, "Function name does not exist.")
 
@@ -138,14 +142,14 @@ class apply_all_expr():
         for new_func in new_funcs:
             self.apply_funcs.append(make_lambda_func(new_func.strip()))
 
-        self.img = img 
+        self.img = img
 
     def evaluate(self):
 
         for func in self.apply_funcs:
             res = func(self.img)
             if (isinstance(res, hiphop_error)):
-                return res 
+                return res
 
 def make_lambda_func(str):
     # From a string representation, creates a lambda function
@@ -166,7 +170,7 @@ def make_lambda_func(str):
     else:
         return hiphop_error("InvalidFunctionError", -1, "Function name does not exist.")
 
-    
+
 class apply_funcs():
 
     def __init__(self, funcs_strings):
@@ -177,7 +181,7 @@ class apply_funcs():
         self.apply_funcs = []
         for func_string in funcs_strings:
             self.apply_funcs.append(make_lambda_func(func_string))
-        
+
 
 class identifier():
 
