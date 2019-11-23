@@ -1,5 +1,6 @@
 # To parse a HIPHOP program
 from hiphoptypes import *
+from hiphoperrors import hiphop_error
 import sys
 
 class Parser():
@@ -42,6 +43,14 @@ class Parser():
                 val = apply_all_expr.evaluate()
                 if (isinstance(val, hiphop_error)):
                     return val 
+        elif tokens[0] == "save-macro":
+            save_macro = is_save_macro_expr(expr)
+            if (isinstance(save_macro, hiphop_error)):
+                return save_macro
+            else: 
+                val = save_macro.evaluate()
+                if (isinstance(val, hiphop_error)):
+                    return val
         else:
             return hiphop_error("ParseError", -1, "Unable to parse line")
 
