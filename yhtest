@@ -1,0 +1,3 @@
+open "test-color.jpg" as img
+apply filtercolor 50 50 110 255 255 130 to img
+save img as "test-filtercolor.jpg"

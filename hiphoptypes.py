@@ -114,6 +114,11 @@ class apply_expr():
             if (len(self.args) != 1):
                 return hiphop_error("InvalidFunctionError", -1, "Invalid number of argments for `outline`")
             outline(self.img, int(self.args[0]))
+        elif (self.funcname == "filtercolor"):
+            if (len(self.args) != 6):
+                return hiphop_error("InvalidFunctionError", -1, "Invalid number of arguments for `filtercolor lowR lowG lowB highR highG highB`")
+            filtercolor(self.img, int(self.args[0]), int(self.args[1]), int(self.args[2]), 
+                                  int(self.args[3]), int(self.args[4]), int(self.args[5]))
         else:
             return hiphop_error("InvalidFunctionError", -1, "Function name does not exist.")
 
