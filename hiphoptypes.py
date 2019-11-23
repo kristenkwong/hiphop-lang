@@ -119,6 +119,10 @@ class apply_expr():
                 return hiphop_error("InvalidFunctionError", -1, "Invalid number of arguments for `filtercolor lowR lowG lowB highR highG highB`")
             filtercolor(self.img, int(self.args[0]), int(self.args[1]), int(self.args[2]), 
                                   int(self.args[3]), int(self.args[4]), int(self.args[5]))
+        elif (self.funcname == "crop"):
+            if (len(self.args) != 4):
+                return hiphop_error("InvalidFunctionError", -1, "Invalid number of arguments for `crop widthlow widthhigh heightlow heighthigh`")
+            crop(self.img, float(self.args[0]), float(self.args[1]), float(self.args[2]), float(self.args[3]))
         else:
             return hiphop_error("InvalidFunctionError", -1, "Function name does not exist.")
 

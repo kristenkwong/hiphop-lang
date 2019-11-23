@@ -86,3 +86,24 @@ def filtercolor(id, lowR, lowG, lowB, highR, highG, highB):
     res = cv2.bitwise_and(img ,img, mask=mask)
     saved_vars.add_var(id, res)
     return
+
+# crop would crop id with specified range
+# where the range of image is [-1, 1] fir width and height with 0 at center
+# for example a image with width 200 and height 100
+# widthlow = -0.5 widthhigh = 0.5 heightlow = -0.5 heighthigh = 0.5
+# would return a new image with pixels ranged [50, 150] for width and [25, 75] for height 
+def crop(id, widthlow, widthhigh, heightlow, heighthigh):
+
+    img = saved_vars.get_var(id)
+    height, width, channels = img.shape
+
+    heighthalf = height/2
+    widthhalf = width/2
+    hl = round(heighthalf + heightlow * heighthalf)
+    hh = round(heighthalf + heighthigh * heighthalf)
+    wl = round(widthhalf + widthlow * widthhalf)
+    wh = round(widthhalf + widthhigh * widthhalf)
+
+    crop_img = img[hl:hh, wl:wh]
+    saved_vars.add_var(id, crop_img)
+    return
