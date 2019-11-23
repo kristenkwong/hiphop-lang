@@ -29,9 +29,11 @@ def savefile(id, filename):
 def blur(id, value):
 
     #TODO: Apply the blur function to the image saved with id.
-
-    print("TODO: BLUR FUNCTION. Parameters: {}, {}".format(id, value))
-    return 
+    img = saved_vars.get_var(id)
+    blurred = cv2.blur(img, (value, value))
+    saved_vars.add_var(id, blurred)
+    # print("TODO: BLUR FUNCTION. Parameters: {}, {}".format(id, value))
+    return
 
 def blackandwhite(id):
 
