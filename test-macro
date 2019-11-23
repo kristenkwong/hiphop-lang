@@ -1,0 +1,7 @@
+open "test-image.jpg" as img
+save-macro [grayscale, blur 10, blur 20, blur 10] to blurscale
+apply blurscale to img
+save img as "test-output_macro.jpg"
+open "testimage2.jpg" as img2
+apply blurscale to img2
+save img2 as "test-output_macro2.jpg"
