@@ -54,7 +54,8 @@ def main():
         print(colored("Starting HIPHOP command line program...", "cyan"))
         print(colored("Type `q` or `quit` to exit. `h` or `help` for functions.", "red"))
         while (True):
-            line = input(colored("hee hee >>> ", "cyan"))
+            print(colored("hee hee >>>", "cyan"), end=" ")
+            line = input()
             if (line.strip() == ""):
                 continue
             elif (line.strip() == "quit" or line.strip() == "q"):
