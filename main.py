@@ -1,6 +1,7 @@
 from hiphopparse import Parser
 from termcolor import colored
 import sys
+import colorama
 from hiphoperrors import hiphop_error, hiphop_eval_error, file_error
 
 def print_help():
@@ -37,6 +38,7 @@ def print_functions():
 def main():
 
     parser = Parser()
+    colorama.init()
 
     # count number of arguments
     if (len(sys.argv) == 2):
