@@ -1,7 +1,7 @@
 from hiphopparse import Parser
 from termcolor import colored
-import sys 
-from hiphoperrors import hiphop_error, hiphop_eval_error
+import sys
+from hiphoperrors import hiphop_error, hiphop_eval_error, file_error
 
 def print_help():
     docs = [
