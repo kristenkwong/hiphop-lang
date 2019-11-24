@@ -91,11 +91,11 @@ Running script written in HIPHOP:
 
 Function Name  | Number of Arguments | Argument Names | What The Function Does
 ------------- | ------------- | ------------- | -------------
-blur | 0 | n/a | Blurs the image
+blur | 1 | scale | Blurs the image by averaging the image with a kernel of scale*scale size
 grayscale | 0 | n/a | Turns the image into black and white
-erode | 1 | TODO | TODO
-dilate | 1 | TODO | TODO
-outline | 1 | TODO | TODO
+erode | 1 | scale | Erodes the image with a kernel of scale*scale size with full of ones
+dilate | 1 | scale | Dilates the image with a kernel of scale*scale size with full of ones
+outline | 1 | scale | Removes the noise in image by eroding and dilating the image with a kernel of scale*scale size with full of ones
 filtercolor | 6 | lowR, lowG, lowB, highR, highG, highB | Filters the image so only color between [lowB, lowG, lowR] and [highB, highG, highR] returns and turns rest of image black
-scale | 2 | TODO | TODO
-crop | 4 | widthlow, widthhigh, heightlow, heighthigh | Crop id with specified range, where the range of image is [-1, 1] for width and height with 0 at center<br>For example, a image with width 200 and height 100<br>widthlow = -0.5 widthhigh = 0.5 heightlow = -0.5 heighthigh = 0.5<br>would return a new image with pixels ranged [50, 150] for width and [25, 75] for height
+scale | 2 | x, y | Scales the image to width x and height y
+crop | 4 | widthlow, widthhigh, heightlow, heighthigh | Crops the image with specified range, where the range of image is [-1, 1] for width and height with 0 at center<br>For example, a image with width 200 and height 100<br>widthlow = -0.5 widthhigh = 0.5<br>heightlow = -0.5 heighthigh = 0.5<br>would return a new image with pixels width ranged [50, 150] and height ranged [25, 75] of original image

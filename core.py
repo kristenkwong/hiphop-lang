@@ -111,10 +111,10 @@ def filtercolor(id, lowR, lowG, lowB, highR, highG, highB):
     return
 
 # crop would crop id with specified range
-# where the range of image is [-1, 1] fir width and height with 0 at center
+# where the range of image is [-1, 1] for width and height with 0 at center
 # for example a image with width 200 and height 100
 # widthlow = -0.5 widthhigh = 0.5 heightlow = -0.5 heighthigh = 0.5
-# would return a new image with pixels ranged [50, 150] for width and [25, 75] for height
+# would return a new image with pixels width ranged [50, 150] and height ranged [25, 75] of original image
 def crop(id, widthlow, widthhigh, heightlow, heighthigh):
 
     img = saved_vars.get_var(id)
