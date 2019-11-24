@@ -21,20 +21,22 @@ HIPHOP is built with Python3, along with multiple modules. To install these, per
 
 ## Running Instruction
 
-HIPHOP can be used in two ways
+HIPHOP can be used in two ways: command line mode and running a HIPHOP script
+(may have to use python3 instead of python depending on which platform you are on)
 
-* Command line mode that reads in line by line
-	1. cd to the directory containing main.py
-	2. Enter command line mode by
-		```
-		python main.py
-		```  
-* Running script written in HIPHOP
-	1. cd to the directory containing main.py
-	2. Run the script by
-		```
-		python main.py <location of script>
-		```
+Command line mode that reads in line by line
+1. In terminal, cd to the directory containing main.py
+2. Enter command line mode by
+	```
+	python main.py
+	```
+
+Running script written in HIPHOP
+1. In terminal, cd to the directory containing main.py
+2. Run the script by
+	```
+	python main.py <location of script>
+	```
 
 ## EBNF
 
@@ -58,3 +60,9 @@ HIPHOP can be used in two ways
 <nums> ::= 
          | <num> <nums>
 ```
+
+## Functions Provided By HIPHOP
+
+* open ***filename*** as ***id***
+* apply ***arguments*** to ***id***
+* save ***id*** as ***filename***
