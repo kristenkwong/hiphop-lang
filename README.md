@@ -1,13 +1,39 @@
 ## Installation Instruction
 
-
 HIPHOP is built with Python3, along with multiple modules. To install these, perform the following steps:
 
 1. Install Python3 via https://www.python.org/downloads/
 2. After Python3 has been installed
-	1. Install opencv with 
+	1. Install OpenCV with 
 		```
 		pip3 install opencv-python
+		```
+	2. Install Termcolor with 
+		```
+		pip3 install termcolor
+		```
+	3. Install Colorama with 
+		```
+		pip3 install colorama
+		```
+3. Ensure that git is installed, following instructions on https://www.atlassian.com/git/tutorials/install-git
+4. Download the v0.1 release of hiphop-lang on https://github.com/kristenkwong/hiphop-lang/releases/tag/v0.1-alpha
+
+## Running Instruction
+
+HIPHOP can be used in two ways
+
+* Command line mode that reads in line by line
+	1. cd to the directory containing main.py
+	2. Enter command line mode by
+		```
+		python main.py
+		```  
+* Running script written in HIPHOP
+	1. cd to the directory containing main.py
+	2. Run the script by
+		```
+		python main.py <location of script>
 		```
 
 ## EBNF
