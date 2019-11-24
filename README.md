@@ -51,13 +51,14 @@ Running script written in HIPHOP:
 * open ***filename*** as ***id***
 	* this command would open file specified at ***filename*** as ***id***
 	* ***filename*** has to be in double quote
-	* ex. to open a file in the testing/images folder and save as test-img
+	* ex. to open a file in the testing/images folder and save as test-img to use in program
 	  ```
 	  open "testing/images/test-color.jpg" as test-img
 	  ```
 * save ***id*** as ***filename***
 	* this command would save ***id*** from the program at ***filename***
-	* folder specofoed in ***filename*** will be created if it doesn't already exist
+	* ***filename*** has to be in double quote
+	* folder specified in ***filename*** will be created if it doesn't already exist
 	* ex. to save test-img at a new folder output in testing as result.jpg
 	  ```
 	  save test-img as "testing/output/result.jpg"
@@ -79,9 +80,23 @@ Running script written in HIPHOP:
 * save-macro ***funcs*** as ***id***
 	* this command allows saving all ***funcs*** as a new ***id***
 	* ***funcs*** have to be a comma separated list of functions
-	* ex. to repeat apply grayscale and then blur on multiple images
+	* ex. to repeat apply blur and then grayscale on multiple images
 	  ```
 	  save-macro [blur 10, grayscale] to blurscale
 	  apply blurscale to img1
 	  apply blurscale to img2
 	  ```
+
+## Functions In HIPHOP
+
+Function Name  | Number of Arguments | Argument Names | What The Function Does
+------------- | ------------- | ------------- | -------------
+blur | 0 | n/a | blurs the image
+grayscale | 0 | n/a | turns the image into black and white
+erode | 1 | TODO | TODO
+dilate | 1 | TODO | TODO
+outline | 1 | TODO | TODO
+filtercolor | 6 | lowR, lowG, lowB, highR, highG, highB | filters the image so only color between [lowB, lowG, lowR] and [highB, highG, highR] returns and turns rest of image black
+scale | 2 | TODO | TODO
+crop | 4 | widthlow, widthhigh, heightlow, heighthigh | crop id with specified range
+
