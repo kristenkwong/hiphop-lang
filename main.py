@@ -1,11 +1,7 @@
 from hiphopparse import Parser
-<<<<<<< HEAD
 from termcolor import colored
 import sys 
-=======
-import sys
 from hiphoperrors import hiphop_error, hiphop_eval_error
->>>>>>> d957925b4026cb0d6bdae406a8ec10b80549d3f9
 
 def print_help():
     docs = [
@@ -45,33 +41,36 @@ def main():
     # count number of arguments
     if (len(sys.argv) == 2):
         filename = sys.argv[1]
-<<<<<<< HEAD
-        print("Interpreting HIPHOP program with the filename: {}".format(filename))
-        parser.parse(filename)
-    if (len(sys.argv) == 1):
-        print(colored("Starting HIPHOP command line program...", "cyan"))
-        print(colored("Type `q` or `quit` to exit. `h` or `help` for functions.", "red"))
-        while (True):
-            line = input(colored("hee hee >>> ", "cyan"))
-            if (line.strip() == "quit" or line.strip() == "q"):
-                break
-            if (line.strip() == "h" or line.strip() == "help"):
-                print_help()
-            if (line.strip() == "list functions"):
-                print_functions()
-            parser.parse_line(line)
-        print(colored("Quitting HIPHOP command line.", "cyan"))
-=======
         # print("Interpreting HIPHOP program with the filename: {}".format(filename))
         try:
             parser.parse(filename)
         except hiphop_error as e:
-            print("There was a problem parsing the file on line {}: {}".format(e.line_num, e.msg))
+            print(colored("There was a problem parsing the file on line {}: {}".format(e.line_num, e.error_msg), "red"))
         except hiphop_eval_error as e:
-            print("There was a problem with evaluating an expression: {}".format(e.msg))
->>>>>>> d957925b4026cb0d6bdae406a8ec10b80549d3f9
+            print(colored("There was a problem with evaluating an expression on line {}: {}".format(e.line_num, e.msg), "red"))
+    elif (len(sys.argv) == 1):
+        print(colored("Starting HIPHOP command line program...", "cyan"))
+        print(colored("Type `q` or `quit` to exit. `h` or `help` for functions.", "red"))
+        while (True):
+            line = input(colored("hee hee >>> ", "cyan"))
+            if (line.strip() == ""):
+                continue
+            elif (line.strip() == "quit" or line.strip() == "q"):
+                break
+            elif (line.strip() == "h" or line.strip() == "help"):
+                print_help()
+            elif (line.strip() == "list functions"):
+                print_functions()
+            else:
+                try:
+                    parser.parse_line(line)
+                except hiphop_error as e:
+                    print(colored("There was a problem parsing the line: {}".format(e.error_msg), "red"))
+                except hiphop_eval_error as e:
+                    print(colored("There was a problem with evaluating the expression: {}".format(e.msg), "red"))
+        print(colored("Quitting HIPHOP command line.", "cyan"))
     else:
-        print("Usage: `python main.py <filename>` or `python main.py`")
+        print(colored("Usage: `python main.py <filename>` or `python main.py`", "red"))
 
 if __name__ == "__main__":
     main()

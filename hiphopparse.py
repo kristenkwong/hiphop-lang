@@ -14,55 +14,38 @@ class Parser():
         tokens = expr.split()
         if tokens[0] == "open":
             open_expr = is_open_expr(expr)
-            if (isinstance(open_expr, hiphop_error)):
-                return open_expr
-            else:
-                val = open_expr.evaluate()
-                return val
+            open_expr.evaluate()
         elif tokens[0] == "apply":
             apply_expr = is_apply_expr(expr)
-            if (isinstance(apply_expr, hiphop_error)):
-                return apply_expr
-            else:
-                val = apply_expr.evaluate()
-                if (isinstance(val, hiphop_error)):
-                    return val
+            apply_expr.evaluate()
         elif tokens[0] == "save":
             save_expr = is_save_expr(expr)
-            if (isinstance(save_expr, hiphop_error)):
-                return save_expr
-            else:
-                val = save_expr.evaluate()
-                if (isinstance(val, hiphop_error)):
-                    return val
+            save_expr.evaluate()
         elif tokens[0] == "apply-all":
             apply_all_expr = is_apply_all_expr(expr)
-            if (isinstance(apply_all_expr, hiphop_error)):
-                return apply_all_expr
-            else:
-                val = apply_all_expr.evaluate()
-                if (isinstance(val, hiphop_error)):
-                    return val
+            apply_all_expr.evaluate()
         elif tokens[0] == "save-macro":
             save_macro = is_save_macro_expr(expr)
-            if (isinstance(save_macro, hiphop_error)):
-                return save_macro
-            else:
-                val = save_macro.evaluate()
-                if (isinstance(val, hiphop_error)):
-                    return val
+            save_macro.evaluate()
         else:
-            raise hiphop_error("ParseError", -1, "Unable to parse line")
+            raise hiphop_error("ParseError","Unable to parse line")
 
     def parse(self, filename):
 
-        f = open(filename, "r")
-        lines = f.readlines()
+        try:
+            f = open(filename, "r")
+            lines = f.readlines()
+        except FileNotFoundError:
+            raise hiphop_error("FileNotFoundError", "File does not exist")
         line_num = 1
         for line in lines:
             print("Parsing line {}: {}".format(line_num, line.strip()))
-            parse_res = self.parse_line(line)
-            if (isinstance(parse_res, hiphop_error)):
-                parse_res.line_num = line_num
-                raise parse_res
+            try:
+                self.parse_line(line)
+            except hiphop_error as e:
+                e.line_num = line_num
+                raise e
+            except hiphop_eval_error as e:
+                e.line_num = line_num
+                raise e
             line_num += 1

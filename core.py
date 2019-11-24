@@ -14,6 +14,8 @@ def openfile(filename, id):
 
     # print("Open file function called. Parameters: {}, {}".format(filename, id))
     img = cv2.imread(filename)
+    if (img is None):
+        raise hiphop_error("OpenImageError", "Filename does not exist.")
     saved_vars.add_var(id, img)
     # cv2.imshow('hi', saved_vars.get_var(id))
 
@@ -23,7 +25,7 @@ def savefile(id, filename):
 
     if (filename.startswith('../')):
         # should throw error here
-        raise hiphop_error("SaveError", -1, "Filename should not start with ../")
+        raise hiphop_error("SaveError", "Filename should not start with ../")
 
     # id filename just start with /
     if (filename.startswith('/')):

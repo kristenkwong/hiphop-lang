@@ -30,7 +30,7 @@ def is_open_expr(expr_str):
     match_filename = re.findall('(?<=open ")(.*)(?=" as)', expr_str)
     match_id = re.findall('(?<=open ")*(?<=" as )(.*)$', expr_str)
     if (len(match_filename) != 1 or len(match_id) != 1):
-        raise hiphop_error("ParserError", -1, 'Invalid syntax for `open` expression.')
+        raise hiphop_error("ParserError", 'Invalid syntax for `open` expression.')
     else:
         return open_expr(match_filename[0], match_id[0])
 
@@ -40,7 +40,7 @@ def is_save_expr(expr_str):
     match_filename = re.findall('(?<=save ).*(?<= as ")(.*)"', expr_str)
     # print("filename: {}; id: {}".format(match_filename[0], match_id[0]))
     if (len(match_filename) != 1 or len(match_id) != 1):
-        raise hiphop_error("ParserError", -1, 'Invalid syntax for `save` expression.')
+        raise hiphop_error("ParserError", 'Invalid syntax for `save` expression.')
     else:
         return save_expr(match_id[0], match_filename[0])
 
@@ -48,7 +48,7 @@ def is_apply_expr(expr_str):
 
     match = re.findall('(?<=apply )(.*)( to )(.*)', expr_str)
     if (len(match) != 1):
-        raise hiphop_error("ParserError", -1, 'Invalid syntax for `apply` expression.')
+        raise hiphop_error("ParserError", 'Invalid syntax for `apply` expression.')
     match_func, _, match_id = match[0]
     match_function= match_func.split()
     match_funcname, match_args = match_function[0], match_function[1:]
@@ -59,14 +59,14 @@ def is_apply_all_expr(expr_str):
 
     match = re.findall('(?<=apply-all \[)(.*)] to (.*)', expr_str)
     if (len(match) != 1):
-        raise hiphop_error("ParserError", -1, 'Invalid syntax for `apply-all` expression.')
+        raise hiphop_error("ParserError", 'Invalid syntax for `apply-all` expression.')
     match_funcs, match_id = match[0]
     lambda_funcs = []
     new_funcs = match_funcs.split(",")
     for new_func in new_funcs:
         new_lambda = make_lambda_func(new_func.strip())
         if (isinstance(new_lambda, hiphop_error)):
-            raise hiphop_error("ParserError", -1, 'Unable to make lambda function for {}'.format(new_func))
+            raise hiphop_error("ParserError", 'Unable to make lambda function for {}'.format(new_func))
         lambda_funcs.append(new_lambda)
     return apply_all_expr(lambda_funcs, match_id)
 
@@ -74,7 +74,7 @@ def is_save_macro_expr(expr_str):
 
     match = re.findall('(?<=save-macro \[)(.*)] to (.*)', expr_str)
     if (len(match) != 1):
-        raise hiphop_error("ParserError", -1, 'Invalid syntax for `save-macro` expression.')
+        raise hiphop_error("ParserError", 'Invalid syntax for `save-macro` expression.')
     match_funcs, match_id = match[0]
     return save_macro_expr(match_funcs, match_id)
 
