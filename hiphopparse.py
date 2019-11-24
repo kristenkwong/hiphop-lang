@@ -38,7 +38,7 @@ class Parser():
             f = open(filename, "r")
             lines = f.readlines()
         except FileNotFoundError:
-            raise hiphop_error("FileNotFoundError", "File does not exist")
+            raise file_error("FileNotFoundError", "File does not exist")
         line_num = 1
         for line in lines:
             print("Parsing line {}: {}".format(line_num, line.strip()))

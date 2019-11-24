@@ -6,7 +6,7 @@ from runenv import saved_vars, saved_macros
 import cv2
 import numpy as np
 import os
-from hiphoperrors import hiphop_error
+from hiphoperrors import hiphop_error, file_error
 
 ###### FILE OPERATIONS ######
 
@@ -25,7 +25,7 @@ def savefile(id, filename):
 
     if (filename.startswith('../')):
         # should throw error here
-        raise hiphop_error("SaveError", "Filename should not start with ../")
+        raise file_error("SaveError", "Cannot save file, filename should not start with ../")
 
     # id filename just start with /
     if (filename.startswith('/')):
