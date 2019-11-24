@@ -1,7 +1,0 @@
-open "test-image.jpg" as img
-save-macro [blur 10, filtercolor 50 50 110 255 255 130] to blurscale
-apply blurscale to img
-save img as "test-output_macro.jpg"
-open "testimage2.jpg" as img2
-apply blurscale to img2
-save img2 as "test-output_macro2.jpg"

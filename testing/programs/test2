@@ -1,0 +1,3 @@
+open "testing/images/test-image.jpg" as img
+apply-all [grayscale, blur 10] to img
+save img as "testing/output/test-output_chain.jpg"

@@ -1,3 +1,0 @@
-open "test-image.jpg" as target
-apply scale 0.5 0.3 to target
-save target as "test-scaled.jpg"

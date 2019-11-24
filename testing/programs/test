@@ -1,0 +1,8 @@
+open "testing/images/test-image.jpg" as img
+apply grayscale to img
+save img as "testing/output/test-output.jpg"
+open "testing/output/test-output.jpg" as img2
+save img2 as "testing/output/test-output2.jpg"
+open "testing/output/test-output2.jpg" as img3
+apply blur 10 to img3
+save img3 as "testing/output/test-output3.jpg"

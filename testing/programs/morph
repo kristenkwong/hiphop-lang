@@ -1,0 +1,16 @@
+open "testing/images/text.jpg" as target
+apply erode 5 to target
+apply dilate 3 to target
+save target as "testing/output/text-output.jpg"
+open "testing/images/man.jpg" as man
+apply erode 3 to man
+apply dilate 3 to man
+save man as "testing/output/man-output.jpg"
+open "testing/images/pinocchio.jpg" as pic
+apply outline 5 to pic
+save pic as "testing/output/pinocchio-outline.jpg"
+open "testing/images/pinocchio.jpg" as pic2
+apply grayscale to pic2
+apply outline 20 to pic2
+apply erode 8 to pic2
+save pic2 as "testing/output/pinocchio-bw-outline.jpg"
