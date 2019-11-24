@@ -46,12 +46,42 @@ Running script written in HIPHOP:
          | <num> <nums>
 ```
 
-## Functions Provided By HIPHOP
+## Commands Provided By HIPHOP
 
 * open ***filename*** as ***id***
-	* this would open file specified at ***filename*** as ***id***
+	* this command would open file specified at ***filename*** as ***id***
 	* ***filename*** has to be in double quote
 	* ex. to open a file in the testing/images folder and save as test-img
-	  ```open "testing/images/test-color.jpg" as test-img``` 
-* apply ***arguments*** to ***id***
+	  ```
+	  open "testing/images/test-color.jpg" as test-img
+	  ```
 * save ***id*** as ***filename***
+	* this command would save ***id*** from the program at ***filename***
+	* folder specofoed in ***filename*** will be created if it doesn't already exist
+	* ex. to save test-img at a new folder output in testing as result.jpg
+	  ```
+	  save test-img as "testing/output/result.jpg"
+	  ```
+* apply ***func*** to ***id***
+	* this command would apply specified ***func*** to given ***id***
+	* see the next section for available functions
+	* ex. to apply grayscale to test-img opened earlier
+	  ```
+	  apply grayscale to test-img
+	  ```
+* apply-all ***funcs*** to ***id***
+	* this command would apply all ***funcs*** specified to given ***id***
+	* ***funcs*** have to be a comma separated list of functions
+	* ex. to apply grayscale and then blur test-img opened earlier
+	  ```
+	  apply-all [grayscale, blur 10] to test-img
+	  ``` 
+* save-macro ***funcs*** as ***id***
+	* this command allows saving all ***funcs*** as a new ***id***
+	* ***funcs*** have to be a comma separated list of functions
+	* ex. to repeat apply grayscale and then blur on multiple images
+	  ```
+	  save-macro [blur 10, grayscale] to blurscale
+	  apply blurscale to img1
+	  apply blurscale to img2
+	  ```
