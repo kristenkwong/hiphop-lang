@@ -91,12 +91,14 @@ Running script written in HIPHOP:
 
 Function Name  | Number of Arguments | Argument Names | What The Function Does
 ------------- | ------------- | ------------- | -------------
-blur | 0 | n/a | blurs the image
-grayscale | 0 | n/a | turns the image into black and white
+blur | 0 | n/a | Blurs the image
+grayscale | 0 | n/a | Turns the image into black and white
 erode | 1 | TODO | TODO
 dilate | 1 | TODO | TODO
 outline | 1 | TODO | TODO
-filtercolor | 6 | lowR, lowG, lowB, highR, highG, highB | filters the image so only color between [lowB, lowG, lowR] and [highB, highG, highR] returns and turns rest of image black
+filtercolor | 6 | lowR, lowG, lowB, highR, highG, highB | Filters the image so only color between [lowB, lowG, lowR] and [highB, highG, highR] returns and turns rest of image black
 scale | 2 | TODO | TODO
-crop | 4 | widthlow, widthhigh, heightlow, heighthigh | crop id with specified range
-
+crop | 4 | widthlow, widthhigh, heightlow, heighthigh | crop id with specified range <br> where the range of image is [-1, 1] for width and height with 0 at center <br> 
+for example a image with width 200 and height 100 <br> 
+widthlow = -0.5 widthhigh = 0.5 heightlow = -0.5 heighthigh = 0.5 <br>
+would return a new image with pixels ranged [50, 150] for width and [25, 75] for height <br>
