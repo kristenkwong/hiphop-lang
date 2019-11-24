@@ -27,6 +27,8 @@ class Parser():
         elif tokens[0] == "save-macro":
             save_macro = is_save_macro_expr(expr)
             save_macro.evaluate()
+        #elif is_identifier(expr):
+        #    pass
         else:
             raise hiphop_error("ParseError","Unable to parse line")
 

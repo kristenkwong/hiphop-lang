@@ -72,11 +72,22 @@ def is_apply_all_expr(expr_str):
 
 def is_save_macro_expr(expr_str):
 
-    match = re.findall('(?<=save-macro \[)(.*)] to (.*)', expr_str)
+    match = re.findall('(?<=save-macro \[)(.*)] as (.*)', expr_str)
     if (len(match) != 1):
         raise hiphop_error("ParserError", 'Invalid syntax for `save-macro` expression.')
     match_funcs, match_id = match[0]
     return save_macro_expr(match_funcs, match_id)
+
+def is_identifier(expr_str):
+    
+    if (saved_macros.get_var(expr_str) != -1):
+        print(saved_macros.get_var(expr_str))
+        return True
+    if (not isinstance(saved_vars.get_var(expr_str), int)):
+        cv2.imshow(expr_str, saved_vars.get_var(expr_str))
+        cv2.waitKey(4000)
+        return True
+    return False
 
 class open_expr():
 
