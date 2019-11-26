@@ -29,20 +29,22 @@ def savefile(id, filename):
         # should throw error here
         raise file_error("SaveError", "Cannot save file, filename should not start with ../")
 
+    new_filename = filename
+
     # id filename just start with /
     if (filename.startswith('/')):
-        filename = "." + filename
+        new_filename = "." + filename
 
     # if filename does not start with ./
-    if not (filename.startswith('./')):
-        filename = "./" + filename
+    if not (new_filename.startswith('./')):
+        new_filename = "./" + filename
 
-    head_tail = os.path.split(filename)
+    head_tail = os.path.split(new_filename)
 
     if not (os.path.exists(head_tail[0])):
         os.makedirs(head_tail[0])
 
-    cv2.imwrite(filename, saved_vars.get_var(id))
+    cv2.imwrite(new_filename, saved_vars.get_var(id))
 
     print(colored("Image at id {} successfully saved to {}".format(id, filename), "green"))
 
