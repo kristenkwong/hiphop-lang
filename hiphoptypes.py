@@ -196,8 +196,7 @@ class save_macro_expr():
         for new_func in new_funcs:
             lambda_func = make_lambda_func(new_func.strip())
             if (isinstance(lambda_func, hiphop_error)):
-                return lambda_func
-                # TODO: throw error
+                raise hiphop_error("FunctionNotFound", "Could not create lambda function.")
             self.funcs.append(lambda_func)
 
         self.id = id
@@ -212,7 +211,7 @@ def make_lambda_func(str):
 
     func_tokens = str.split(" ")
     funcname, func_args = func_tokens[0], func_tokens[1:]
-    print("Making lambda function - funcname: {}, args: {}".format(funcname, func_args))
+    # print("Making lambda function - funcname: {}, args: {}".format(funcname, func_args))
 
     if (funcname == "blur"):
         if (len(func_args) != 1):

@@ -7,6 +7,8 @@ import cv2
 import numpy as np
 import os
 from hiphoperrors import hiphop_error, file_error
+from termcolor import colored
+import colorama
 
 ###### FILE OPERATIONS ######
 
@@ -41,6 +43,8 @@ def savefile(id, filename):
         os.makedirs(head_tail[0])
 
     cv2.imwrite(filename, saved_vars.get_var(id))
+
+    print(colored("Image at id {} successfully saved to {}".format(id, filename), "green"))
 
 
 ###### IMAGE OPERATIONS ######

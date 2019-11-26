@@ -50,6 +50,8 @@ def main():
             print(colored("There was a problem parsing the file on line {}: {}".format(e.line_num, e.error_msg), "red"))
         except hiphop_eval_error as e:
             print(colored("There was a problem with evaluating an expression on line {}: {}".format(e.line_num, e.msg), "red"))
+        except file_error as e:
+            print(colored("The file does not exist: {}".format(e.msg), "red"))
     elif (len(sys.argv) == 1):
         print(colored("Starting HIPHOP command line program...", "cyan"))
         print(colored("Type `q` or `quit` to exit. `h` or `help` for functions.", "red"))
@@ -71,6 +73,8 @@ def main():
                     print(colored("There was a problem parsing the line: {}".format(e.error_msg), "red"))
                 except hiphop_eval_error as e:
                     print(colored("There was a problem with evaluating the expression: {}".format(e.msg), "red"))
+                except file_error as e:
+                    print(colored("There was a problem with file processing: {}".format(e.msg), "red"))
         print(colored("Quitting HIPHOP command line.", "cyan"))
     else:
         print(colored("Usage: `python main.py <filename>` or `python main.py`", "red"))
