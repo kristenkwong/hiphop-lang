@@ -26,8 +26,7 @@ Running script written in HIPHOP:
 ## EBNF
 
 ```
-<HHE> ::= <id>
-        | open <filename> as <id>
+<HHE> ::= open <filename> as <id>
         | save <id> as <filename>
         | apply <func> to <id>
         | apply-all [<funcs>] to <id>
