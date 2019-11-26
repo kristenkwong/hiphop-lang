@@ -1,7 +1,7 @@
 from hiphopparse import Parser
 from termcolor import colored
-import sys
 import colorama
+import sys
 from hiphoperrors import hiphop_error, hiphop_eval_error, file_error
 
 def print_help():
@@ -51,7 +51,7 @@ def main():
         except hiphop_eval_error as e:
             print(colored("There was a problem with evaluating an expression on line {}: {}".format(e.line_num, e.msg), "red"))
         except file_error as e:
-            print(colored("The file does not exist: {}".format(e.msg), "red"))
+            print(colored("There was a problem with file operations: {}".format(e.msg), "red"))
     elif (len(sys.argv) == 1):
         print(colored("Starting HIPHOP command line program...", "cyan"))
         print(colored("Type `q` or `quit` to exit. `h` or `help` for functions.", "red"))

@@ -7,6 +7,7 @@ HIPHOP is built with Python3, along with multiple modules. To install these, per
 	1. Install OpenCV with ```pip3 install opencv-python```
 	2. Install Termcolor with ```pip3 install termcolor```
 	3. Install Colorama with ```pip3 install colorama```
+	4. Install numpy with ```pip3 install numpy```
 3. Ensure that git is installed, following instructions on https://www.atlassian.com/git/tutorials/install-git
 4. Download the v0.1 release of hiphop-lang on https://github.com/kristenkwong/hiphop-lang/releases/tag/v0.1-alpha
 
