@@ -5,7 +5,7 @@ from hiphoperrors import hiphop_error
 reserved_func_names = ["blur", "grayscale", "erode", "dilate",
                        "outline", "filtercolor", "scale", "crop", "impose", "reload"]
 
-working_dir = ""
+env_vars = {'wd': '"./'}
 
 
 class var_dict():
