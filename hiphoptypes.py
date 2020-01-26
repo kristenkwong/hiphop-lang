@@ -33,6 +33,7 @@ def is_open_expr(expr_str):
     expr_arr = expr_str.split('"', maxsplit=1)
     expr_arr.insert(1, env_vars['wd'])
     expr_str = ''.join(expr_arr)
+    # print(expr_str)
 
     match_filename = re.findall('(?<=open ")(.*)(?=" as)', expr_str)
     match_id = re.findall('(?<=open ")*(?<=" as )(.*)$', expr_str)
@@ -82,14 +83,17 @@ def is_load_expr(expr_str):
 
 def is_save_expr(expr_str):
 
-    expr_arr = expr_str.split('"', maxsplit=1)
+    expr_arr = expr_str.split('"')
     expr_arr.insert(1, env_vars['wd'])
-    if 'genfilename"' in expr_arr:
-        newFile = genFilename()
+    if 'genfilename' in expr_arr:
+        fileType = expr_arr[3]
+        newFile = genFilename(fileType)
         expr_arr[2] = newFile
+        # print(newFile)
     # print(expr_arr)
+    expr_arr.pop()
     expr_str = ''.join(expr_arr)
-    # print(expr_str)
+    print(expr_str)
 
     match_id = re.findall('(?<=save )(.*)(?= as)', expr_str)
     match_filename = re.findall('(?<=save ).*(?<= as ")(.*)"', expr_str)
@@ -101,12 +105,16 @@ def is_save_expr(expr_str):
         return save_expr(match_id[0], match_filename[0])
 
 
-def genFilename():
+def genFilename(fileType):
+    approvedTypes = ['jpg', 'jpeg', 'png', 'bmp', 'tiff']
+    if fileType.strip() not in approvedTypes:
+        raise hiphop_eval_error("InvalidParameter", "Invalid file type.")
     timestamp = time.localtime()
     timestamp = time.strftime("%Y-%m-%d %H:%M:%S", timestamp)
     timestamp = timestamp.replace(" ", ".")
     timestamp = timestamp.replace(":", ".")
-    filename = "hiphop" + timestamp + '.jpg"'
+    filename = 'hiphop{}.{}"'.format(timestamp, fileType.strip())
+    # print(filename)
     return filename
 
 
