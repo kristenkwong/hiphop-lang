@@ -38,6 +38,7 @@ def print_functions():
         "outline radius",
         "filtercolor lowR lowG lowB highR highG highB",
         "crop widthlow widthhigh heightlow heighthigh",
+        "impose imageId px py",
     ]
     for line in functions:
         print(colored(line, "blue"))
