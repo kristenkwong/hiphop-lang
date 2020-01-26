@@ -5,6 +5,8 @@ from hiphoperrors import hiphop_error, hiphop_eval_error
 """
 <HHE> ::= <id>
         | open <filename> as <id>
+        | set <variable> <literal>
+        | get <variable>
         | save <id> as <filename>
         | apply <func> to <id>
         | apply-all [<funcs>] to <id>
@@ -27,6 +29,9 @@ from hiphoperrors import hiphop_error, hiphop_eval_error
 def is_open_expr(expr_str):
     # For one line of the program, if valid program return object,
     # otherwise False
+    expr_arr = expr_str.split('"', maxsplit=1)
+    expr_arr.insert(1, env_vars['wd'])
+    expr_str = ''.join(expr_arr)
 
     match_filename = re.findall('(?<=open ")(.*)(?=" as)', expr_str)
     match_id = re.findall('(?<=open ")*(?<=" as )(.*)$', expr_str)
@@ -35,6 +40,31 @@ def is_open_expr(expr_str):
             "ParserError", 'Invalid syntax for `open` expression.')
     else:
         return open_expr(match_filename[0], match_id[0])
+
+
+def is_set_expr(expr_str):
+    # set expressions allow users to manipulate environment variables
+    # on the fly, geared towards changing working directory but other
+    # uses will probably pop up in the future
+
+    args = expr_str.split()
+    envVar = args[1]
+    setVal = args[2]
+
+    return set_expr(envVar, setVal)
+
+
+def is_get_expr(expr_str):
+    # get expressions allow users to retrieve values of existing
+    # environment variables
+
+    args = expr_str.split()
+    if len(args) > 2:
+        raise hiphop_error(
+            "ParserError", "Invalid syntax for `get` expression.")
+    else:
+        envVar = args[1]
+        return get_expr(envVar)
 
 
 def is_load_expr(expr_str):
@@ -50,6 +80,10 @@ def is_load_expr(expr_str):
 
 
 def is_save_expr(expr_str):
+
+    expr_arr = expr_str.split('"', maxsplit=1)
+    expr_arr.insert(1, env_vars['wd'])
+    expr_str = ''.join(expr_arr)
 
     match_id = re.findall('(?<=save )(.*)(?= as)', expr_str)
     match_filename = re.findall('(?<=save ).*(?<= as ")(.*)"', expr_str)
@@ -123,6 +157,37 @@ class open_expr():
 
     def evaluate(self):
         openfile(self.filename, self.id)
+
+
+class set_expr():
+
+    def __init__(self, envVar, setVal):
+        self.envVar = envVar
+        self.setVal = setVal
+
+    def evaluate(self):
+        if self.envVar == 'wd':
+            env_vars[self.envVar] = self.setVal[:(len(self.setVal)-1)]
+        else:
+            env_vars[self.envVar] = self.setVal
+
+
+class get_expr():
+
+    def __init__(self, envVar):
+        self.envVar = envVar
+        if self.envVar in env_vars:
+            self.value = env_vars[envVar]
+        else:
+            self.value = ""
+
+    def get(self):
+        if self.envVar in env_vars:
+            print(colored("Current value of {}: {}".format(
+                self.envVar, self.value.replace('"', '')), "green"))
+        else:
+            print(
+                colored("{} is not a current environment variable".format(self.envVar), "red"))
 
 
 class save_expr():
