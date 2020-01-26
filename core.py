@@ -2,7 +2,7 @@
 
 # Add to function names when implementing new functions:
 
-from runenv import saved_vars, saved_macros
+from runenv import saved_vars, saved_macros, env_vars
 import cv2
 import numpy as np
 import os
@@ -162,19 +162,22 @@ def impose(id, overlay, px, py):
     img = saved_vars.get_var(id)
     other_image = saved_vars.get_var(overlay)
 
-    # Define mask
+    # Mask ranges from 0 to width / height of overlay
     mask = np.zeros(img.shape, dtype=np.bool)
-    mask[px:other_image.shape[0], py:other_image.shape[1]] = True
+    mask[:other_image.shape[0], :other_image.shape[1]] = True
 
     locs = np.where(mask != 0)  # Get the non-zero mask locations
 
-    # Case #1 - Other image is grayscale and source image is colour
+    # Following conditional logic is equivalent to copyTo from other languages
+    # TODO implement overflow logic to cutoff instead of wrap
+
+    # Background is colored but overlay is grayscale
     if len(img.shape) == 3 and len(other_image.shape) != 3:
-        img[locs[0], locs[1]] = other_image[locs[0], locs[1], None]
-    # Case #2 - Both images are colour or grayscale
+        img[locs[0] + px, locs[1] + py] = other_image[locs[0], locs[1], None]
+    # Both overlay and background are grayscale
     elif (len(img.shape) == 3 and len(other_image.shape) == 3) or \
             (len(img.shape) == 1 and len(other_image.shape) == 1):
-        img[locs[0], locs[1]] = other_image[locs[0], locs[1]]
+        img[locs[0] + px, locs[1] + py] = other_image[locs[0], locs[1]]
     # Otherwise, we can't do this
     else:
         raise hiphop_error("InvalidFunctionError",
