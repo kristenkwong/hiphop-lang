@@ -37,6 +37,18 @@ def is_open_expr(expr_str):
         return open_expr(match_filename[0], match_id[0])
 
 
+def is_load_expr(expr_str):
+    # even though reloading is just opening, the syntax is different,
+    # which requires this check
+
+    args = expr_str.split()
+    if len(args) > 2:
+        raise hiphop_error(
+            "ParserError", "Invalid syntax for `reload` expression.")
+    else:
+        return open_expr(saved_vars.get_path(args[1]), args[1])
+
+
 def is_save_expr(expr_str):
 
     match_id = re.findall('(?<=save )(.*)(?= as)', expr_str)
@@ -182,10 +194,11 @@ class apply_expr():
             crop(self.img, float(self.args[0]), float(
                 self.args[1]), float(self.args[2]), float(self.args[3]))
         elif (self.funcname == "impose"):
-            if (len(self.args) != 1):
+            if (len(self.args) != 3):
                 raise hiphop_eval_error(
                     "InvalidFunctionError", "Invalid number of arguments for `impose`.")
-            impose(self.img, str(self.args[0]))
+            impose(self.img, str(self.args[0]), int(
+                self.args[1]), int(self.args[2]))
         elif (saved_macros.get_var(self.funcname) != -1):
             if len(self.args) != 0:
                 raise hiphop_eval_error(
@@ -287,10 +300,10 @@ def make_lambda_func(str):
                 "InvalidFunctionError", "Invalid number of arguments for `crop widthlow widthhigh heightlow heighthigh`")
         return lambda img: crop(img, float(func_args[0]), float(func_args[1]), float(func_args[2]), float(func_args[3]))
     elif (funcname == "impose"):
-        if (len(func_args) != 1):
+        if (len(func_args) != 3):
             raise hiphop_eval_error(
                 "InvalidFunctionError", "Invalid number of arguments for `impose`.")
-        return lambda img: impose(img, str(func_args[0]))
+        return lambda img: impose(img, str(func_args[0]), int(func_args[1]), int(func_args[2]))
     else:
         raise hiphop_eval_error("InvalidFunctionError",
                                 "Function name does not exist.")
