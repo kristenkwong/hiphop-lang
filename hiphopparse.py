@@ -16,6 +16,9 @@ class Parser():
         if tokens[0] == "open":
             open_expr = is_open_expr(expr)
             open_expr.evaluate()
+        elif tokens[0] == "reload":
+            load_expr = is_load_expr(expr)
+            load_expr.evaluate()
         elif tokens[0] == "apply":
             apply_expr = is_apply_expr(expr)
             apply_expr.evaluate()
