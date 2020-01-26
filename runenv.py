@@ -3,7 +3,9 @@
 from hiphoperrors import hiphop_error
 
 reserved_func_names = ["blur", "grayscale", "erode", "dilate",
-                       "outline", "filtercolor", "scale", "crop", "impose"]
+                       "outline", "filtercolor", "scale", "crop", "impose", "reload"]
+
+working_dir = ""
 
 
 class var_dict():
@@ -14,12 +16,16 @@ class var_dict():
     def __init__(self):
         self.map = {}
 
-    def add_var(self, id, img):
+    def add_var(self, id, img, path):
         self.map[id] = img
+        self.map[id + 'p'] = path
 
     def get_var(self, id):
 
         return self.map.get(id, -1)
+
+    def get_path(self, id):
+        return self.map.get(id + 'p', -1)
 
 
 class macros_dict():
