@@ -2,7 +2,9 @@
 # such as all identifiers
 from hiphoperrors import hiphop_error
 
-reserved_func_names = ["blur", "grayscale", "erode", "dilate", "outline", "filtercolor", "scale", "crop"]
+reserved_func_names = ["blur", "grayscale", "erode", "dilate",
+                       "outline", "filtercolor", "scale", "crop", "impose"]
+
 
 class var_dict():
     """
@@ -13,11 +15,12 @@ class var_dict():
         self.map = {}
 
     def add_var(self, id, img):
-        self.map[id] = img 
+        self.map[id] = img
 
     def get_var(self, id):
 
         return self.map.get(id, -1)
+
 
 class macros_dict():
     """
@@ -35,9 +38,11 @@ class macros_dict():
 
     def get_var(self, id):
         return self.map.get(id, -1)
-    
+
+
 saved_vars = var_dict()
 saved_macros = macros_dict()
+
 
 def is_id_used(new_id):
 

@@ -3,6 +3,7 @@ from hiphoptypes import *
 from hiphoperrors import hiphop_error
 import sys
 
+
 class Parser():
 
     def __init__(self):
@@ -27,10 +28,10 @@ class Parser():
         elif tokens[0] == "save-macro":
             save_macro = is_save_macro_expr(expr)
             save_macro.evaluate()
-        #elif is_identifier(expr):
+        # elif is_identifier(expr):
         #    pass
         else:
-            raise hiphop_error("ParseError","Unable to parse line")
+            raise hiphop_error("ParseError", "Unable to parse line")
 
     def parse(self, filename):
 
@@ -38,7 +39,8 @@ class Parser():
             f = open(filename, "r")
             lines = f.readlines()
         except FileNotFoundError:
-            raise file_error("FileNotFoundError", 'File "{}" does not exist'.format(filename))
+            raise file_error("FileNotFoundError",
+                             'File "{}" does not exist'.format(filename))
         line_num = 1
         for line in lines:
             #print("Parsing line {}: {}".format(line_num, line.strip()))
