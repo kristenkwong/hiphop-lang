@@ -19,8 +19,13 @@ def openfile(filename, id):
     img = cv2.imread(filename)
     if (img is None):
         raise hiphop_error("OpenImageError", "Filename does not exist.")
-    saved_vars.add_var(id, img)
+    saved_vars.add_var(id, img, filename)
     # cv2.imshow('hi', saved_vars.get_var(id))
+
+
+def reload(id):
+    # print(saved_vars.get_path(id))
+    openfile(saved_vars.get_path(id), id)
 
 
 def savefile(id, filename):
@@ -59,7 +64,7 @@ def scale(id, x, y):
     height = int(img.shape[0] * y)
     dim = (width, height)
     scaled = cv2.resize(img, dim)
-    saved_vars.add_var(id, scaled)
+    saved_vars.add_var(id, scaled, saved_vars.get_path(id))
     return
 
 
@@ -67,7 +72,7 @@ def blur(id, value):
 
     img = saved_vars.get_var(id)
     blurred = cv2.blur(img, (value, value))
-    saved_vars.add_var(id, blurred)
+    saved_vars.add_var(id, blurred, saved_vars.get_path(id))
 
 
 def grayscale(id):
@@ -76,7 +81,7 @@ def grayscale(id):
 
     img = saved_vars.get_var(id)
     gray_image = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    saved_vars.add_var(id, gray_image)
+    saved_vars.add_var(id, gray_image, saved_vars.get_path(id))
     return
 
 
@@ -85,7 +90,7 @@ def erode(id, value):
     kernel = np.ones((value, value), np.uint8)
     img = saved_vars.get_var(id)
     eroded = cv2.erode(img, kernel, iterations=1)
-    saved_vars.add_var(id, eroded)
+    saved_vars.add_var(id, eroded, saved_vars.get_path(id))
     return
 
 
@@ -94,7 +99,7 @@ def dilate(id, value):
     kernel = np.ones((value, value), np.uint8)
     img = saved_vars.get_var(id)
     eroded = cv2.dilate(img, kernel, iterations=1)
-    saved_vars.add_var(id, eroded)
+    saved_vars.add_var(id, eroded, saved_vars.get_path(id))
     return
 
 
@@ -103,7 +108,7 @@ def outline(id, value):
     kernel = np.ones((value, value), np.uint8)
     img = saved_vars.get_var(id)
     morph_gradient = cv2.morphologyEx(img, cv2.MORPH_GRADIENT, kernel)
-    saved_vars.add_var(id, morph_gradient)
+    saved_vars.add_var(id, morph_gradient, saved_vars.get_path(id))
     return
 
 
@@ -122,7 +127,7 @@ def filtercolor(id, lowR, lowG, lowB, highR, highG, highB):
 
     # Bitwise-AND mask and original image
     res = cv2.bitwise_and(img, img, mask=mask)
-    saved_vars.add_var(id, res)
+    saved_vars.add_var(id, res, saved_vars.get_path(id))
     return
 
 # crop would crop id with specified range
@@ -145,22 +150,21 @@ def crop(id, widthlow, widthhigh, heightlow, heighthigh):
     wh = round(widthhalf + widthhigh * widthhalf)
 
     crop_img = img[hl:hh, wl:wh]
-    saved_vars.add_var(id, crop_img)
+    saved_vars.add_var(id, crop_img, saved_vars.get_path(id))
     return
 
-# impose will overlay a new photo on top of an existing opened image
-# the method will need opacity and x y values as args
+# impose will overlay a new photo on top of an existing image
+# requires image id, pixel values for x and y placement based
+# off of top left corner of imposed image
 
 
-def impose(id, overlay):
+def impose(id, overlay, px, py):
     img = saved_vars.get_var(id)
     other_image = saved_vars.get_var(overlay)
-    # print(img.shape)
-    # print(img2.shape)
 
     # Define mask
     mask = np.zeros(img.shape, dtype=np.bool)
-    mask[:other_image.shape[0], :other_image.shape[1]] = True
+    mask[px:other_image.shape[0], py:other_image.shape[1]] = True
 
     locs = np.where(mask != 0)  # Get the non-zero mask locations
 
@@ -173,5 +177,7 @@ def impose(id, overlay):
         img[locs[0], locs[1]] = other_image[locs[0], locs[1]]
     # Otherwise, we can't do this
     else:
-        raise Exception("Incompatible input and output dimensions")
+        raise hiphop_error("InvalidFunctionError",
+                           "Incompatible input and output dimensions.")
+    saved_vars.add_var(id, img, saved_vars.get_path(id))
     return
