@@ -205,7 +205,11 @@ class get_expr():
             self.value = ""
 
     def get(self):
-        if self.envVar in env_vars:
+        if self.envVar == 'all':
+            for var in env_vars:
+                print(colored("Current value of {}: {}".format(
+                    var, env_vars[var].replace('"', '')), "green"))
+        elif self.envVar in env_vars:
             print(colored("Current value of {}: {}".format(
                 self.envVar, self.value.replace('"', '')), "green"))
         else:
