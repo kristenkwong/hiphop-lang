@@ -1,4 +1,5 @@
 import re
+import time
 from core import *
 from hiphoperrors import hiphop_error, hiphop_eval_error
 
@@ -83,7 +84,12 @@ def is_save_expr(expr_str):
 
     expr_arr = expr_str.split('"', maxsplit=1)
     expr_arr.insert(1, env_vars['wd'])
+    if 'genfilename"' in expr_arr:
+        newFile = genFilename()
+        expr_arr[2] = newFile
+    # print(expr_arr)
     expr_str = ''.join(expr_arr)
+    # print(expr_str)
 
     match_id = re.findall('(?<=save )(.*)(?= as)', expr_str)
     match_filename = re.findall('(?<=save ).*(?<= as ")(.*)"', expr_str)
@@ -93,6 +99,15 @@ def is_save_expr(expr_str):
             "ParserError", 'Invalid syntax for `save` expression.')
     else:
         return save_expr(match_id[0], match_filename[0])
+
+
+def genFilename():
+    timestamp = time.localtime()
+    timestamp = time.strftime("%Y-%m-%d %H:%M:%S", timestamp)
+    timestamp = timestamp.replace(" ", ".")
+    timestamp = timestamp.replace(":", ".")
+    filename = "hiphop" + timestamp + '.jpg"'
+    return filename
 
 
 def is_apply_expr(expr_str):
