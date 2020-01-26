@@ -31,6 +31,12 @@ class Parser():
         elif tokens[0] == "save-macro":
             save_macro = is_save_macro_expr(expr)
             save_macro.evaluate()
+        elif tokens[0] == "set":
+            set_expr = is_set_expr(expr)
+            set_expr.evaluate()
+        elif tokens[0] == "get":
+            get_expr = is_get_expr(expr)
+            get_expr.get()
         # elif is_identifier(expr):
         #    pass
         else:
