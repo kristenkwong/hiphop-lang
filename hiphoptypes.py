@@ -82,18 +82,24 @@ def is_load_expr(expr_str):
 
 
 def is_save_expr(expr_str):
-
-    expr_arr = expr_str.split('"')
+    if 'genfilename' in expr_str:
+        gen = True
+        genMax = 2
+    else:
+        gen = False
+        genMax = 1
+    # print(gen)
+    expr_arr = expr_str.split('"', maxsplit=genMax)
     expr_arr.insert(1, env_vars['wd'])
-    if 'genfilename' in expr_arr:
+    if gen:
         fileType = expr_arr[3]
         newFile = genFilename(fileType)
         expr_arr[2] = newFile
         # print(newFile)
+        expr_arr.pop()
     # print(expr_arr)
-    expr_arr.pop()
     expr_str = ''.join(expr_arr)
-    print(expr_str)
+    # print(expr_str)
 
     match_id = re.findall('(?<=save )(.*)(?= as)', expr_str)
     match_filename = re.findall('(?<=save ).*(?<= as ")(.*)"', expr_str)
@@ -291,6 +297,11 @@ class apply_expr():
                     "InvalidFunctionError", "Invalid number of arguments for `impose`.")
             impose(self.img, str(self.args[0]), int(
                 self.args[1]), int(self.args[2]))
+        elif (self.funcname == "wave"):
+            if (len(self.args) != 2):
+                raise hiphop_eval_error(
+                    "InvalidFunctionError", "Invalid number of arguments for `wave`.")
+            wave(self.img, str(self.args[0]), str(self.args[1]))
         elif (saved_macros.get_var(self.funcname) != -1):
             if len(self.args) != 0:
                 raise hiphop_eval_error(
@@ -396,6 +407,11 @@ def make_lambda_func(str):
             raise hiphop_eval_error(
                 "InvalidFunctionError", "Invalid number of arguments for `impose`.")
         return lambda img: impose(img, str(func_args[0]), int(func_args[1]), int(func_args[2]))
+    elif (funcname == "wave"):
+        if (len(func_args) != 2):
+            raise hiphop_eval_error(
+                "InvalidFunctionError", "Invalid number of arguments for `wave`.")
+        return lambda img: wave(img, str(func_args[0]), str(func_args[1]))
     else:
         raise hiphop_eval_error("InvalidFunctionError",
                                 "Function name does not exist.")

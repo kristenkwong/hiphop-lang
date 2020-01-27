@@ -184,3 +184,48 @@ def impose(id, overlay, px, py):
                            "Incompatible input and output dimensions.")
     saved_vars.add_var(id, img, saved_vars.get_path(id))
     return
+
+# wave applies a sine wave to the image in either horizontal,
+# vertical, or multirdirectional ways
+
+
+def wave(id, direction, amplitude):
+    img = saved_vars.get_var(id)
+    img_output = np.zeros(img.shape, dtype=img.dtype)
+    rows, cols, mask = img.shape
+    if direction == "v":
+        # print("Dir v")
+        for i in range(rows):
+            for j in range(cols):
+                offset_x = int(int(amplitude) * np.sin(2 * 3.14 * i / 180))
+                offset_y = 0
+                if j+offset_x < rows:
+                    img_output[i, j] = img[i, (j+offset_x) % cols]
+                else:
+                    img_output[i, j] = 0
+    elif direction == "h":
+        # print("Dir h")
+        for i in range(rows):
+            for j in range(cols):
+                offset_x = 0
+                offset_y = int(int(amplitude) * np.sin(2 * 3.14 * j / 150))
+                if i+offset_y < rows:
+                    img_output[i, j] = img[(i+offset_y) % rows, j]
+                else:
+                    img_output[i, j] = 0
+
+    elif direction == "m":
+        for i in range(rows):
+            for j in range(cols):
+                offset_x = int(int(amplitude) * np.sin(2 * 3.14 * i / 150))
+                offset_y = int(int(amplitude) * np.cos(2 * 3.14 * j / 150))
+                if i+offset_y < rows and j+offset_x < cols:
+                    img_output[i, j] = img[(i+offset_y) %
+                                           rows, (j+offset_x) % cols]
+                else:
+                    img_output[i, j] = 0
+    else:
+        raise hiphop_error("InvalidFunctionError",
+                           "Invalid parameters.")
+    saved_vars.add_var(id, img_output, saved_vars.get_path(id))
+    return
