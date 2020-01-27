@@ -56,7 +56,7 @@ Running script written in HIPHOP:
 	  open "testing/images/test-color.jpg" as test-img
 	  ```
 * reload ***id***
-	* this command would re-open a file related at the path reliated to ***id***
+	* this command would re-open a file at the path related to ***id***
 	* ***id*** does not have to be in quotes
 	* ex. to undo changes applied to an image
 	  ```
